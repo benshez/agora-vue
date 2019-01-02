@@ -1,0 +1,65 @@
+{
+  "name": "nsvue2codesharedemo",
+  "version": "1.0.0",
+  "description": "A native application built with NativeScript-Vue",
+  "author": "Tiago Alves <tralves@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "web:start": "webpack-dev-server --mode development --inline --hot --config build/web/webpack.config.js",
+    "web:dev": "webpack --mode development --config build/web/webpack.config.js",
+    "web:build": "webpack --mode production --config build/web/webpack.config.js"
+  },
+  "nativescript": {
+    "id": "org.nativescript.application",
+    "tns-ios": {
+      "version": "4.2.0"
+    },
+    "tns-android": {
+      "version": "4.2.0"
+    }
+  },
+  "dependencies": {
+    "@vue/devtools": "^5.0.0-beta.3",
+    "nativescript-socket.io": "^0.9.0",
+    "nativescript-theme-core": "^1.0.4",
+    "nativescript-toast": "^1.4.6",
+    "nativescript-vue": "^2.0.0-alpha.3",
+    "nativescript-vue-devtools": "^1.0.0",
+    "tns-core-modules": "^5.1.1",
+    "vue": "^2.5.17",
+    "vue-router": "^3.0.2",
+    "tns-platform-declarations": "^5.1.1",
+    "nativescript-sqlite": "^2.2.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "babel-traverse": "6.26.0",
+    "babel-types": "6.26.0",
+    "babylon": "6.18.0",
+    "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^4.5.2",
+    "cross-env": "^5.2.0",
+    "css-hot-loader": "^1.4.2",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "lazy": "1.0.11",
+    "mini-css-extract-plugin": "^0.5.0",
+    "nativescript-dev-webpack": "^0.18.5",
+    "nativescript-vue-template-compiler": "^2.0.0-alpha.3",
+    "nativescript-worker-loader": "~0.9.0",
+    "node-sass": "^4.9.2",
+    "sass-loader": "^7.1.0",
+    "uglifyjs-webpack-plugin": "~2.1.1",
+    "vue-loader": "^15.2.6",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.16.4",
+    "webpack-bundle-analyzer": "~3.0.3",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8",
+    "typescript": "^3.2.2",
+    "ts-loader": "^5.3.2"
+  }
+}

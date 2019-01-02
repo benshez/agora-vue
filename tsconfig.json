@@ -1,0 +1,43 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "sourceMap": true,
+        "lib": [
+            "dom",
+            "es2015"
+        ],
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "types": [
+            "node"
+        ],
+        "typeRoots": [
+            "types"
+        ],
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "paths": {
+            "@assets/*": [
+                "app/assets/*"
+            ],
+            "@components/*": [
+                "app/components/*"
+            ]
+        }
+    },
+    "include": [
+        "app",
+        "types"
+    ],
+    "exclude": [
+        "node_modules",
+        "hooks",
+        "platforms"
+    ]
+}
