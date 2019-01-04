@@ -1,0 +1,14 @@
+{
+    "workbench.colorTheme": "Visual Studio Dark",
+    "window.zoomLevel": 0,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "files.associations": {
+        "*.vue": "vue"
+    },
+    "editor.autoClosingQuotes": "always",
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "editor.formatOnSave": true,
+    "typescript.locale": "en",
+    "typescript.referencesCodeLens.enabled": true
+}

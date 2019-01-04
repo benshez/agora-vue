@@ -3,7 +3,7 @@
 android {
   defaultConfig {  
     generatedDensities = []
-    applicationId = "org.nativescript.application"
+    applicationId = "com.agora.application"
   }
   aaptOptions {  
     additionalParameters "--no-version-vectors"  

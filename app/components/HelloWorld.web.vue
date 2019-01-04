@@ -2,7 +2,8 @@
   <div class="page">
     <h1>{{count}}</h1>
     <label class="body">This is a hello world component, tap the button if you dare!!!</label>
-    
+    {{translation.About.Description}}
+    <agora-language-picker/>
     <button class="btn btn-primary" @click="surprise = !surprise">{{title}}</button>
     <img v-if="surprise" src="@assets/images/NativeScript-Vue.png" style="display:block;">
     <!--  -->
@@ -11,14 +12,16 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import HelloWorldBase from "@components/HelloWorldBase";
+import i18n from "@common/i18n/components/i18n.web.vue";
 
-export default Vue.extend({
+export default {
   name: "HelloWorld",
+  components: {
+    i18n
+  },
   mixins: [HelloWorldBase]
-});
-
+};
 </script>
 
 <style lang="scss" scoped>

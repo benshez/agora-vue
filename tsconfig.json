@@ -11,9 +11,6 @@
         "noEmitHelpers": true,
         "noImplicitThis": true,
         "noImplicitAny": true,
-        "types": [
-            "node"
-        ],
         "typeRoots": [
             "types"
         ],
@@ -26,6 +23,9 @@
             "@assets/*": [
                 "app/assets/*"
             ],
+            "@common/*": [
+                "app/common/*"
+            ],               
             "@components/*": [
                 "app/components/*"
             ]

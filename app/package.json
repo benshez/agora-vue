@@ -3,6 +3,6 @@
     "v8Flags": "--expose_gc"
   },
   "main": "main.native",
-  "name": "nsvue2codesharedemo",
+  "name": "agora",
   "version": "1.0.0"
 }

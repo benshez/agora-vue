@@ -1,10 +1,15 @@
-import Vue from 'vue'
+import Vue from 'vue';
+
+import store from '@common/base/store';
 
 import HelloWorld from '@components/HelloWorld.web.vue';
 
-import './styles'
+import './styles';
+
+Vue.config.silent = false;
 
 new Vue({
-    el: '#app',
-    render: h => h(HelloWorld),
-})
+	el: '#app',
+	store,
+	render: (h) => h(HelloWorld)
+});
