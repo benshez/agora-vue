@@ -11,5 +11,5 @@ Vue.config.silent = TNS_ENV === 'production';
 Vue.use(VueDevtools);
 
 new Vue({
-	render: (h) => h('frame', [ h(HelloWorld) ])
+	render: (h) => h('frame', [h(HelloWorld)])
 }).$start();
