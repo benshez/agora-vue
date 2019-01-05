@@ -1,14 +1,12 @@
-// import Es6Promise from 'es6-promise';
-// Es6Promise.polyfill();
+import Plugings from '@common/base/plugins/Pluging.web';
+Plugings();
 
 import Vue from 'vue';
-import App from '~/App.web.vue';
+import App from '@components/app/App.web.vue';
 import store from '@common/base/store';
-import Plugings from '@common/base/plugins/Pluging';
+
 import Interceptors from '@common/base/interceptors/Interceptors';
 
-
-Plugings();
 Interceptors();
 
 import './styles';

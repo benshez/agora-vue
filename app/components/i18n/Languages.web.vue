@@ -1,8 +1,17 @@
 <template>
   <div>
-    <select>
-      <option>Please select...</option>
-    </select>
+    <v-menu offset-y>
+      <v-btn slot="activator" color="primary" dark>Dropdown</v-btn>
+      <v-list>
+        <v-list-tile
+          v-for="(language) in languages"
+          :key="language.key"
+          @click="OnLanguageChange(language.key)"
+        >
+          <v-list-tile-title>{{ language.description }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
   </div>
 </template>
 

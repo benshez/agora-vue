@@ -17,20 +17,11 @@
 </template>
 
 <script lang="ts">
-import HelloWorldBase from "@components/HelloWorldBase";
+import AppBase from "@components/app/AppBase";
 
 export default {
-  name: "HelloWorld",
-  mixins: [HelloWorldBase]
+  name: "App",
+  mixins: [AppBase]
 };
 </script>
 
-<style lang="scss" scoped>
-.hello-world {
-  margin: 20;
-}
-
-label {
-  color: red;
-}
-</style>

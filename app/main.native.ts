@@ -1,15 +1,25 @@
-import Vue from 'nativescript-vue';
-import VueDevtools from 'nativescript-vue-devtools';
+import Plugings from '@common/base/plugins/Pluging.native';
+Plugings();
 
-import HelloWorld from '@components/HelloWorld.native.vue';
+import Vue from 'nativescript-vue';
+import platformModule from 'tns-core-modules/platform';
+import App from '@components/app/App.native.vue';
 
 import './styles';
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = TNS_ENV === 'production';
-
-Vue.use(VueDevtools);
+Vue.prototype.$isAndroid = platformModule.isAndroid;
+Vue.prototype.$isIOS = platformModule.isIOS;
 
 new Vue({
-	render: (h) => h('frame', [h(HelloWorld)])
+	computed: {
+		pageClasses: function() {
+			return {
+				'platform-ios': platformModule.isIOS,
+				'platform-android': platformModule.isAndroid
+			};
+		}
+	},
+	render: (h) => h('frame', [ h(App) ])
 }).$start();
