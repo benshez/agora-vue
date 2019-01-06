@@ -2,6 +2,7 @@ import { I18n } from 'i18n-ts';
 export interface ITranslation {
 	AppName: string;
 	AppNameUpperCase: string;
+	TranslationSelectText: string;
 	menu: {
 		user: {
 			description: string;
@@ -77,4 +78,5 @@ export interface ITranslation {
 	};
 	Greeting: (name: string) => string;
 	AppStarted: (app: string) => string;
+	CopyRight: () => string;
 }

@@ -4,8 +4,9 @@ export const af: ILanguage = {
 	key: 'af',
 	description: 'Afrikaans',
 	translation: {
-		AppName: 'Agora',
+		AppName: '(A) Agora',
 		AppNameUpperCase: 'AGORA',
+		TranslationSelectText: 'Vertaal',
 		menu: {
 			user: {
 				description: '(A)User',
@@ -80,6 +81,7 @@ export const af: ILanguage = {
 			Description: '(A)Description'
 		},
 		Greeting: (name: string) => `Hi ${name}`,
-		AppStarted: (app: string) => `A ${app} started.`
+		AppStarted: (app: string) => `A ${app} started.`,
+		CopyRight: () => `(A) © ${new Date().getFullYear()}`
 	}
 };

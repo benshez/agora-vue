@@ -17,14 +17,14 @@ const { NativeScriptWorkerPlugin } = require('nativescript-worker-loader/NativeS
 
 module.exports = (env) => {
 	// Add your custom Activities, Services and other android app components here.
-	const appComponents = [ 'tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity' ];
+	const appComponents = ['tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity'];
 
 	const platform = env && ((env.android && 'android') || (env.ios && 'ios'));
 	if (!platform) {
 		throw new Error('You need to provide a target platform!');
 	}
 
-	const platforms = [ 'ios', 'android' ];
+	const platforms = ['ios', 'android'];
 	const projectRoot = __dirname;
 
 	// Default destination inside platforms/<platform>/...
@@ -51,7 +51,7 @@ module.exports = (env) => {
 	const appResourcesFullPath = resolve(projectRoot, appResourcesPath);
 
 	const entryModule = nsWebpack.getEntryModule(appFullPath);
-	const entryPath = `.${sep}${entryModule}.ts`;
+	const entryPath = `.${sep}${entryModule}`;
 	console.log(`Bundling application for entryPath ${entryPath}...`);
 
 	const config = {
@@ -107,7 +107,7 @@ module.exports = (env) => {
 			fs: 'empty',
 			__dirname: false
 		},
-		devtool: 'eval-source-map',
+		devtool: 'none',
 		optimization: {
 			splitChunks: {
 				cacheGroups: {
@@ -166,18 +166,18 @@ module.exports = (env) => {
 				},
 
 				// TODO: Removed the rule once https://github.com/vuejs/vue-hot-reload-api/pull/70 is accepted
-				{
-					test: resolve(__dirname, 'node_modules/vue-hot-reload-api/dist/index.js'),
-					use: '../vue-hot-reload-api-patcher'
-				},
+				// {
+				// 	test: resolve(__dirname, 'node_modules/vue-hot-reload-api/dist/index.js'),
+				// 	use: '../vue-hot-reload-api-patcher'
+				// },
 
 				{
 					test: /\.css$/,
-					use: [ 'css-loader', 'sass-loader' ]
+					use: ['css-loader', 'sass-loader']
 				},
 				{
 					test: /\.scss$/,
-					use: [ 'css-loader', 'sass-loader' ]
+					use: ['css-loader', 'sass-loader']
 				},
 				{
 					test: /\.js$/,
@@ -188,13 +188,13 @@ module.exports = (env) => {
 					loader: 'vue-loader',
 					options: {
 						loaders: {
-							css: [ 'css-loader', 'sass-loader' ],
-							scss: [ 'css-loader', 'sass-loader' ],
+							css: ['css-loader', 'sass-loader'],
+							scss: ['css-loader', 'sass-loader'],
 							ts: [
 								{
 									loader: 'ts-loader',
 									options: {
-										appendTsSuffixTo: [ /\.vue$/ ]
+										appendTsSuffixTo: [/\.vue$/]
 									}
 								}
 							]
@@ -207,7 +207,7 @@ module.exports = (env) => {
 					loader: 'ts-loader',
 					exclude: /node_modules/,
 					options: {
-						appendTsSuffixTo: [ /\.vue$/ ]
+						appendTsSuffixTo: [/\.vue$/]
 					}
 				}
 			]
@@ -222,10 +222,10 @@ module.exports = (env) => {
 			// Define useful constants like TNS_WEBPACK
 			new webpack.DefinePlugin({
 				'global.TNS_WEBPACK': 'true',
-				TNS_ENV: JSON.stringify(mode)
+				__TNS_ENV__: JSON.stringify(mode)
 			}),
 			// Remove all files from the out dir.
-			new CleanWebpackPlugin([ `${dist}/**/*` ]),
+			new CleanWebpackPlugin([`${dist}/**/*`]),
 			// Copy native app resources to out dir.
 			new CopyWebpackPlugin([
 				{
@@ -235,11 +235,11 @@ module.exports = (env) => {
 				}
 			]),
 			// Copy assets to out dir. Add your own globs as needed.
-			new CopyWebpackPlugin([ { from: 'fonts/**' }, { from: '**/*.+(jpg|png)' }, { from: 'assets/**/*' } ], {
-				ignore: [ `${relative(appPath, appResourcesFullPath)}/**` ]
+			new CopyWebpackPlugin([{ from: 'fonts/**' }, { from: '**/*.+(jpg|png)' }, { from: 'assets/**/*' }], {
+				ignore: [`${relative(appPath, appResourcesFullPath)}/**`]
 			}),
 			// Generate a bundle starter script and activate it in package.json
-			new nsWebpack.GenerateBundleStarterPlugin([ './vendor', './bundle' ]),
+			new nsWebpack.GenerateBundleStarterPlugin(['./vendor', './bundle']),
 			// For instructions on how to set up workers with webpack
 			// check out https://github.com/nativescript/worker-loader
 			new NativeScriptWorkerPlugin(),
@@ -269,7 +269,7 @@ module.exports = (env) => {
 		config.plugins.push(
 			new nsWebpack.NativeScriptSnapshotPlugin({
 				chunk: 'vendor',
-				requireModules: [ 'tns-core-modules/bundle-entry-points' ],
+				requireModules: ['tns-core-modules/bundle-entry-points'],
 				projectRoot,
 				webpackConfig: config
 			})

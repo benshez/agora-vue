@@ -5,6 +5,7 @@ html,
 body {
 	color: $secondary;
 	height: 100%;
+	overflow: hidden;
 }
 
 body {
@@ -30,6 +31,8 @@ body {
 	img {
 		align-self: center;
 	}
+
+
 }
 
 button {
@@ -41,4 +44,15 @@ button {
 .hello-world {
 	margin: 20;
 	font-size: 200px;
+}
+
+.v-content {
+	.container {
+		&.fill-height {
+			overflow-y: auto;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+		}
+	}
 }

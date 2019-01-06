@@ -1,4 +1,5 @@
 import { IAppSettings } from '@common/config/interfaces/IAppSettings';
+import { IRoute } from '@common/router/interfaces/IRoute';
 
 export class Config {
 	public static APP_SETTINGS: IAppSettings = {

@@ -6,6 +6,7 @@ export const en: ILanguage = {
 	translation: {
 		AppName: 'Agora',
 		AppNameUpperCase: 'AGORA',
+		TranslationSelectText: 'Translate',
 		menu: {
 			user: {
 				description: 'User',
@@ -80,6 +81,7 @@ export const en: ILanguage = {
 			Description: 'Description'
 		},
 		Greeting: (name: string) => `Hi ${name}`,
-		AppStarted: (app: string) => `${app} started.`
+		AppStarted: (app: string) => `${app} started.`,
+		CopyRight: () => `© ${new Date().getFullYear()}`
 	}
 };

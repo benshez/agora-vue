@@ -15,12 +15,22 @@
             "es2016",
             "dom"
         ],
+        "types": [
+            "node"
+        ],
         "typeRoots": [
             "node_modules/@types",
             "types"
         ],
         "baseUrl": "./",
         "paths": {
+            "~/*": [
+                "app/*"
+            ],
+            "*": [
+                "./node_modules/tns-core-modules/*",
+                "./node_modules/*"
+            ],
             "@assets/*": [
                 "app/assets/*"
             ],
@@ -32,13 +42,13 @@
             ]
         }
     },
-    // "include": [
-    //     "app",
-    //     "types"
-    // ],
-    // "exclude": [
-    //     "node_modules",
-    //     "hooks",
-    //     "platforms"
-    // ]
+    "include": [
+        "app",
+        "types"
+    ],
+    "exclude": [
+        "node_modules",
+        "hooks",
+        "platforms"
+    ]
 }

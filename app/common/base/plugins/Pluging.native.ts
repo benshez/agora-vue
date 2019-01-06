@@ -3,7 +3,8 @@ import Vue, { registerElement } from 'nativescript-vue';
 
 registerElement('RadSideDrawer', () => require('nativescript-ui-sidedrawer').RadSideDrawer);
 registerElement('RadListView', () => require('nativescript-ui-listview').RadListView);
+registerElement('Mapbox', () => require('nativescript-mapbox').MapboxView);
 
-export default function() {
+export default function () {
 	//Vue.use(VueDevtools);
 }

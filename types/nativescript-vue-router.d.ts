@@ -7,5 +7,6 @@ declare module 'vue-router/types/router' {
 		 * switches the router to use the navigation stack to navigate between pages
 		*/
 		pageRouting?: boolean;
+		options?: any;
 	}
 }
