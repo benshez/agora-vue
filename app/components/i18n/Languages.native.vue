@@ -1,10 +1,14 @@
 <template></template>
 
 <script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
 import LanguagesBase from "@components/i18n/LanguagesBase";
+import { ITranslation } from "@common/i18n/interfaces/ITranslation";
 
-export default {
-  name: "agora-language-picker",
+@Component({
   mixins: [LanguagesBase]
-};
+})
+export default class AgoraLanguagePicker extends Vue {
+  @Prop(Object) translation: ITranslation;
+}
 </script>

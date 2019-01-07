@@ -1,8 +1,8 @@
-<template>
-</template>
+<template></template>
 
 <script lang="ts">
-  export default {
-    name: "AgoraHome",
-  }
+import { Vue, Component, Prop } from "vue-property-decorator";
+
+@Component({})
+export default class AgoraHome extends Vue {}
 </script>

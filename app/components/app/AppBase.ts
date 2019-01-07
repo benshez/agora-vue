@@ -1,13 +1,15 @@
-import Vue from 'vue';
+import { Vue, Component } from 'vue-property-decorator';
 import { mapState } from 'vuex';
 import { IRootState } from '@common/base/store/interfaces/IRootState';
+import { ITranslation } from '@common/i18n/interfaces/ITranslation';
 
-export default Vue.extend({
-	computed: {
-		...mapState({
-			translation: (state: IRootState) => {
-				return state.Language.translation;
-			}
-		})
-	}
-});
+@Component({
+	computed: mapState({
+		translation: (state: IRootState) => {
+			return state.Language.translation;
+		}
+	})
+})
+export default class AppBase extends Vue {
+	public translation: ITranslation;
+}

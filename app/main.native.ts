@@ -2,24 +2,33 @@ import Plugings from '@common/base/plugins/Pluging.native';
 Plugings();
 
 import Vue from 'nativescript-vue';
-import platformModule from 'tns-core-modules/platform';
+import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import App from '@components/app/App.native.vue';
+import store from '@common/base/store';
+import { routes } from '@components/Routes';
+import Interceptors from '@common/base/interceptors/Interceptors';
+import filters from '@common/base/filters';
+
+Interceptors();
+filters();
 
 import './styles';
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = __TNS_ENV__ === 'production';
-//Vue.prototype.$isAndroid = platformModule.isAndroid;
-//Vue.prototype.$isIOS = platformModule.isIOS;
+Vue.prototype.$isAndroid = isAndroid;
+Vue.prototype.$isIOS = isIOS;
 
 new Vue({
+	store,
+	router: routes,
 	computed: {
-		//	pageClasses: function () {
-		//		return {
-		//			'platform-ios': platformModule.isIOS,
-		//			'platform-android': platformModule.isAndroid
-		//		};
-		//	}
+		// pageClasses: function() {
+		// 	return {
+		// 		'platform-ios': isIOS,
+		// 		'platform-android': isAndroid
+		// 	};
+		// }
 	},
-	render: (h) => h('frame', [h(App)])
+	render: (h) => h('frame', [ h(App) ])
 }).$start();

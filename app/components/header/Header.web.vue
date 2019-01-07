@@ -1,12 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer
-      fixed
-      v-model="drawerLeft"
-      left
-      temporary
-      app
-    >
+    <v-navigation-drawer fixed v-model="drawerLeft" left temporary app>
       <!-- <v-toolbar
         color="blue-grey"
         dark
@@ -18,7 +12,7 @@
             <v-list-tile-title class="title">{{translation.About.Description}}</v-list-tile-title>
           </v-list-tile>
         </v-list>
-      </v-toolbar> -->
+      </v-toolbar>-->
       <v-divider></v-divider>
       <v-list dense>
         <v-list-tile @click.stop="left = !drawerLeft">
@@ -26,78 +20,62 @@
             <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-
             <v-list-tile-title
               v-for="(route) in routes"
               :key="route.key"
-            >
-              {{ {state: translation, key: route.meta.translationKey} | translate}}
-            </v-list-tile-title>
+            >{{ {state: translation, key: route.meta.translationKey} | translate}}</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar
-      color="blue-grey"
-      dark
-      fixed
-      app
-      clipped-left
-    >
+    <v-toolbar color="blue-grey" dark fixed app clipped-left>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>{{translation.AppName}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <agora-language-picker :translation="translation" />
+      <agora-language-picker :translation="translation"/>
     </v-toolbar>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import { mapState } from "vuex";
-  import { RouteConfig } from "vue-router";
-  import AgoraLanguagePicker from "@components/i18n/Languages.web.vue";
-  import { GET_ROUTES } from "@common/base/store/MutationTypes";
-  import { IRootState } from "@common/base/store/interfaces/IRootState";
-  import { IRoute } from "@common/router/interfaces/IRoute";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { mapState } from "vuex";
+import { RouteConfig } from "vue-router";
+import { GET_ROUTES } from "@common/base/store/MutationTypes";
+import { IRootState } from "@common/base/store/interfaces/IRootState";
+import { IRoute } from "@common/router/interfaces/IRoute";
+import { ITranslation } from "@common/i18n/interfaces/ITranslation";
+import AgoraLanguagePicker from "@components/i18n/Languages.web.vue";
 
-  export default Vue.extend({
-    name: "AgoraHeader",
-    components: { AgoraLanguagePicker },
-    props: {
-      translation: {}
-    },
-    data: () => ({
-      drawerLeft: false,
-      router: []
+@Component({
+  components: { AgoraLanguagePicker },
+  computed: {
+    ...mapState({
+      routes: (state: IRootState) => {
+        return state.Routes;
+      }
     }),
-    watch: {
-      drawer(value) {
-        this.drawerLeft = value;
+    drawer: {
+      get(): boolean {
+        return this.drawerLeft;
       },
-      drawerLeft(value) {
-        this.$emit("drawerStatus", value);
+      set(value: boolean) {
+        this.drawerLeft = value;
       }
-    },
-    computed: {
-      ...mapState({
-        routes: (state: IRootState) => {
-          return state.Routes;
-        }
-      }),
-      drawer: {
-        get(): boolean {
-          return this.drawerLeft;
-        },
-        set(value: boolean) {
-          this.drawerLeft = value;
-        }
-      }
-    },
-    created() {
-      //this.router = this.$store.dispatch(`Routes/${GET_ROUTES}`, "");
-      //this.$router.options.routes
-      const x = "";
     }
-  });
+  }
+})
+export default class AgoraHeader extends Vue {
+  private drawerLeft: Boolean = false;
+  @Prop(Object) translation: ITranslation;
+
+  @Watch("drawer")
+  onDrawerChanged(value: Boolean, oldValue: Boolean) {
+    this.drawerLeft = value;
+  }
+  @Watch("drawerLeft")
+  onDrawerStatusChanged(value: Boolean, oldValue: Boolean) {
+    this.$emit("drawerStatus", value);
+  }
+}
 </script>

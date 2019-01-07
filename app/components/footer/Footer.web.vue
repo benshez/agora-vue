@@ -1,9 +1,5 @@
 <template>
-  <v-footer
-    color="blue-grey"
-    class="white--text"
-    app
-  >
+  <v-footer color="blue-grey" class="white--text" app>
     <span>{{translation.AppName}}</span>
     <v-spacer></v-spacer>
     <span>{{translation.CopyRight()}}</span>
@@ -11,12 +7,12 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  export default Vue.extend({
-    name: "AgoraFooter",
-    props: {
-      translation: {}
-    }
-  });
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { ITranslation } from "@common/i18n/interfaces/ITranslation";
+
+@Component
+export default class AgoraFooter extends Vue {
+  @Prop(Object) translation: ITranslation;
+}
 </script>
 
