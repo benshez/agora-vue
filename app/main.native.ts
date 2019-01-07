@@ -5,7 +5,7 @@ import Vue from 'nativescript-vue';
 import { isAndroid, isIOS } from 'tns-core-modules/platform';
 import App from '@components/app/App.native.vue';
 import store from '@common/base/store';
-import { routes } from '@components/Routes';
+import { routes } from '@views/routes/native';
 import Interceptors from '@common/base/interceptors/Interceptors';
 import filters from '@common/base/filters';
 
@@ -15,9 +15,10 @@ filters();
 import './styles';
 
 // Prints Vue logs when --env.production is *NOT* set while building
-Vue.config.silent = __TNS_ENV__ === 'production';
+Vue.config.silent = __ENVIRONMENT__ === 'production';
 Vue.prototype.$isAndroid = isAndroid;
 Vue.prototype.$isIOS = isIOS;
+Vue.prototype.$isNative = __IS_NATIVE__ === true;
 
 new Vue({
 	store,
@@ -30,5 +31,5 @@ new Vue({
 		// 	};
 		// }
 	},
-	render: (h) => h('frame', [ h(App) ])
+	render: (h) => h('frame', [h(App)])
 }).$start();

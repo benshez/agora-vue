@@ -4,7 +4,7 @@ Plugings();
 import Vue from 'vue';
 import App from '@components/app/App.web.vue';
 import store from '@common/base/store';
-import { routes } from '@components/Routes';
+import { routes } from '@views/routes/web';
 import Interceptors from '@common/base/interceptors/Interceptors';
 import filters from '@common/base/filters';
 
@@ -13,16 +13,12 @@ filters();
 
 import './styles';
 
-Vue.config.silent = false;
+Vue.config.silent = __ENVIRONMENT__ === 'production';
+Vue.prototype.$isNative = __IS_NATIVE__ === true;
 
 new Vue({
 	el: '#app',
 	router: routes,
 	store,
-	data: function () {
-		return {
-			routes: routes
-		}
-	},
 	render: (h) => h(App)
 });

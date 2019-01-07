@@ -17,14 +17,14 @@ const { NativeScriptWorkerPlugin } = require('nativescript-worker-loader/NativeS
 
 module.exports = (env) => {
 	// Add your custom Activities, Services and other android app components here.
-	const appComponents = [ 'tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity' ];
+	const appComponents = ['tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity'];
 
 	const platform = env && ((env.android && 'android') || (env.ios && 'ios'));
 	if (!platform) {
 		throw new Error('You need to provide a target platform!');
 	}
 
-	const platforms = [ 'ios', 'android' ];
+	const platforms = ['ios', 'android'];
 	const projectRoot = __dirname;
 
 	// Default destination inside platforms/<platform>/...
@@ -90,6 +90,7 @@ module.exports = (env) => {
 				'@assets': resolve(appFullPath, 'assets'),
 				'@common': resolve(appFullPath, 'common'),
 				'@components': resolve(appFullPath, 'components'),
+				'@views': resolve(appFullPath, 'views'),
 				vue: 'nativescript-vue'
 			},
 			// don't resolve symlinks to symlinked modules
@@ -173,11 +174,11 @@ module.exports = (env) => {
 
 				{
 					test: /\.css$/,
-					use: [ 'css-loader', 'sass-loader' ]
+					use: ['css-loader', 'sass-loader']
 				},
 				{
 					test: /\.scss$/,
-					use: [ 'css-loader', 'sass-loader' ]
+					use: ['css-loader', 'sass-loader']
 				},
 				{
 					test: /\.js$/,
@@ -207,7 +208,7 @@ module.exports = (env) => {
 					loader: 'ts-loader',
 					exclude: /node_modules/,
 					options: {
-						appendTsSuffixTo: [ /\.vue$/ ]
+						appendTsSuffixTo: [/\.vue$/]
 					}
 				}
 			]
@@ -222,10 +223,11 @@ module.exports = (env) => {
 			// Define useful constants like TNS_WEBPACK
 			new webpack.DefinePlugin({
 				'global.TNS_WEBPACK': 'true',
-				__TNS_ENV__: JSON.stringify(mode)
+				__ENVIRONMENT__: JSON.stringify(mode),
+				__IS_NATIVE__: true
 			}),
 			// Remove all files from the out dir.
-			new CleanWebpackPlugin([ `${dist}/**/*` ]),
+			new CleanWebpackPlugin([`${dist}/**/*`]),
 			// Copy native app resources to out dir.
 			new CopyWebpackPlugin([
 				{
@@ -235,11 +237,11 @@ module.exports = (env) => {
 				}
 			]),
 			// Copy assets to out dir. Add your own globs as needed.
-			new CopyWebpackPlugin([ { from: 'fonts/**' }, { from: '**/*.+(jpg|png)' }, { from: 'assets/**/*' } ], {
-				ignore: [ `${relative(appPath, appResourcesFullPath)}/**` ]
+			new CopyWebpackPlugin([{ from: 'fonts/**' }, { from: '**/*.+(jpg|png)' }, { from: 'assets/**/*' }], {
+				ignore: [`${relative(appPath, appResourcesFullPath)}/**`]
 			}),
 			// Generate a bundle starter script and activate it in package.json
-			new nsWebpack.GenerateBundleStarterPlugin([ './vendor', './bundle' ]),
+			new nsWebpack.GenerateBundleStarterPlugin(['./vendor', './bundle']),
 			// For instructions on how to set up workers with webpack
 			// check out https://github.com/nativescript/worker-loader
 			new NativeScriptWorkerPlugin(),
@@ -269,7 +271,7 @@ module.exports = (env) => {
 		config.plugins.push(
 			new nsWebpack.NativeScriptSnapshotPlugin({
 				chunk: 'vendor',
-				requireModules: [ 'tns-core-modules/bundle-entry-points' ],
+				requireModules: ['tns-core-modules/bundle-entry-points'],
 				projectRoot,
 				webpackConfig: config
 			})

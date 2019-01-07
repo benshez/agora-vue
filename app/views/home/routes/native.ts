@@ -1,9 +1,9 @@
 import { RouteConfig } from 'vue-router';
-import Home from '@components/home/Home.web.vue';
+import AgoraHome from '@views/home/native.vue';
 
 export const HomeRoute: RouteConfig = {
   path: '/',
-  component: Home,
+  component: AgoraHome,
   meta: {
     translationKey: 'menu.home.description',
     description: 'Home'

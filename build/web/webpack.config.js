@@ -10,6 +10,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const projectRoot = resolve(__dirname, '../..')
 const platform = 'web'
 
+const mode = 'development';
+
 const appFullPath = resolve(projectRoot, 'app')
 const appResourcesFullPath = resolve(
 	appFullPath,
@@ -42,6 +44,7 @@ const config = {
 			'@assets': resolve(appFullPath, 'assets'),
 			'@common': resolve(appFullPath, 'common'),
 			'@components': resolve(appFullPath, 'components'),
+			'@views': resolve(appFullPath, 'views'),
 			vue$: 'vue/dist/vue.esm.js'
 		},
 	},
@@ -108,6 +111,11 @@ const config = {
 		}),
 		new HtmlWebpackPlugin({
 			template: resolve(appResourcesFullPath, 'index.html'),
+		}),
+		new webpack.DefinePlugin({
+			'global.TNS_WEBPACK': 'false',
+			__ENVIRONMENT__: JSON.stringify(mode),
+			__IS_NATIVE__: false
 		}),
 		new VueLoaderPlugin(),
 	],
