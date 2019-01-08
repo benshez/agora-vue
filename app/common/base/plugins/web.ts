@@ -13,5 +13,4 @@ export default function() {
 			error: '#b71c1c'
 		}
 	});
-	// Vue.component('date-time-picker', VueCtkDateTimePicker)
 }

@@ -59,7 +59,7 @@
 <script lang="ts">
   import { Vue, Component, Prop } from "vue-property-decorator";
   import { mapState } from "vuex";
-  import AppBase from "@components/app/AppBase";
+  import AppBase from "@components/app/base";
   import { IRootState } from "@common/base/store/interfaces/IRootState";
 
   @Component({

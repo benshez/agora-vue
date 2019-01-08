@@ -27,9 +27,9 @@
 
 <script lang="ts">
   import { Vue, Component, Prop } from "vue-property-decorator";
-  import AppBase from "@components/app/AppBase";
-  import AgoraHeader from "@components/header/Header.web.vue";
-  import AgoraFooter from "@components/footer/Footer.web.vue";
+  import AppBase from "@components/app/base";
+  import AgoraHeader from "@components/header/web.vue";
+  import AgoraFooter from "@components/footer/web.vue";
 
   @Component({
     components: { AgoraHeader, AgoraFooter },

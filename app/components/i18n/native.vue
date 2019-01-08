@@ -2,7 +2,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import LanguagesBase from "@components/i18n/LanguagesBase";
+import LanguagesBase from "@components/i18n/base";
 import { ITranslation } from "@common/i18n/interfaces/ITranslation";
 
 @Component({

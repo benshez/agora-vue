@@ -1,5 +1,5 @@
-import TranslateFilters from '@common/base/filters/TranslateFilters';
+import translate from '~/common/base/filters/translate';
 
-export default function () {
-  TranslateFilters()
+export default function() {
+	translate();
 }
