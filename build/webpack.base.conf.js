@@ -1,4 +1,4 @@
-const { platformWeb, Utilities } = require('./base.config');
+const { platformWeb, Utilities } = require('./environments/base.config');
 const platform = platformWeb();
 const utils = new Utilities(platform);
 
