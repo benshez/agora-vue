@@ -1,4 +1,4 @@
-import Plugings from '~/common/base/plugins/web';
+import Plugings from '@common/base/plugins/web';
 Plugings();
 
 import Vue from 'vue';

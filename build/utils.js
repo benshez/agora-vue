@@ -18,8 +18,8 @@ module.exports = {
 	platformIsNative: platformIsNative
 };
 
-const PLATFORM = 'web';
-const PROJECT_ROOT = resolve(__dirname, '../..');
-const APP_FULL_PATH = resolve(PROJECT_ROOT, 'app');
-const APP_RESOURCES_FULL_PATH = resolve(APP_FULL_PATH, `App_Resources${sep}${PLATFORM}`);
-const DISTRIBUTABLE_FULL_PATH = resolve(PROJECT_ROOT, `platforms${sep}${PLATFORM}`);
+// const PLATFORM = 'web';
+// const PROJECT_ROOT = resolve(__dirname, '../..');
+// const APP_FULL_PATH = resolve(PROJECT_ROOT, 'app');
+// const APP_RESOURCES_FULL_PATH = resolve(APP_FULL_PATH, `App_Resources${sep}${PLATFORM}`);
+// const DISTRIBUTABLE_FULL_PATH = resolve(PROJECT_ROOT, `platforms${sep}${PLATFORM}`);

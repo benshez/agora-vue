@@ -6,20 +6,16 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const TARGET = process.env.NODE_ENV;
-const platform = 'web';
-const projectRoot = resolve(__dirname, '../..');
-const appFullPath = resolve(projectRoot, 'app');
-const dist = resolve(projectRoot, `platforms${sep}${platform}`);
-const { getExtensions } = require('../utils');
-const appResourcesFullPath = resolve(appFullPath, `App_Resources${sep}${platform}`);
+const { platformWeb, Utilities, paths } = require('../base.config');
+const platform = platformWeb();
+const utils = new Utilities(platform);
 
-module.exports = {
+const config = {
 	entry: {
-		main: join(appFullPath, 'main.web.ts')
+		main: join(paths.app, `main.${platform}.ts`)
 	},
 	output: {
-		path: dist
+		path: `${paths.dist}${sep}${platform}`
 	},
 	optimization: {
 		minimize: true,
@@ -103,22 +99,22 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			'~': appFullPath,
-			'@assets': resolve(appFullPath, 'assets'),
-			'@common': resolve(appFullPath, 'common'),
-			'@components': resolve(appFullPath, 'components'),
-			'@views': resolve(appFullPath, 'views'),
+			'~': paths.app,
+			'@assets': resolve(paths.app, 'assets'),
+			'@common': resolve(paths.app, 'common'),
+			'@components': resolve(paths.app, 'components'),
+			'@views': resolve(paths.app, 'views'),
 			vue$: 'vue/dist/vue.esm.js'
 		},
-		extensions: getExtensions(platform)
+		extensions: utils.getExtensions()
 	},
 	plugins: [
 		new webpack.DefinePlugin({
 			'global.TNS_WEBPACK': 'false',
-			__ENVIRONMENT__: JSON.stringify(TARGET),
-			__IS_NATIVE__: false,
-			__IS_IOS__: false,
-			__IS_ANDROID__: false
+			__ENVIRONMENT__: JSON.stringify(utils.getMode()),
+			__IS_NATIVE__: utils.getPlatformIsNative(),
+			__IS_IOS__: utils.getPatformIsIos,
+			__IS_ANDROID__: utils.getPlatformIsAndroid()
 		}),
 		new MiniCssExtractPlugin({
 			filename: `app.css`
@@ -126,8 +122,8 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			inject: true,
 			filename: 'index.html',
-			template: resolve(appResourcesFullPath, 'index.html'),
-			favicon: resolve(appResourcesFullPath, 'favicon.ico'),
+			template: `${paths.resources}${sep}${platform}${sep}index.html`,
+			favicon: `${paths.resources}${sep}${platform}${sep}favicon.ico`,
 			title: 'Agora moble application',
 			files: {
 				css: [
@@ -145,3 +141,7 @@ module.exports = {
 		hints: false
 	}
 };
+
+utils.report('info', `config for ${platform} is ${JSON.stringify(config)}`);
+
+module.exports = config;

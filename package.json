@@ -9,7 +9,7 @@
 		"dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --config ./build/build/web/webpack.config.js --mode development",
 		"web:dev": "webpack --mode development --config build/web/webpack.config.js",
 		"web:build": "webpack --mode production --config build/web/webpack.config.js",
-		"web:build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.base.conf.js --mode production"
+		"web:build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.base.conf.js --mode production --platform=web"
 	},
 	"nativescript": {
 		"id": "com.agora.application",

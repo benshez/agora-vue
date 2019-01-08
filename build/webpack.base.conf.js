@@ -1,9 +1,7 @@
-const config = {
-	development: require('./config/dev.env'),
-	production: require('./config/prod.env'),
-	test: require('./config/test.env')
-};
+const { platformWeb, Utilities } = require('./base.config');
+const platform = platformWeb();
+const utils = new Utilities(platform);
 
-const TARGET = process.env.NODE_ENV;
+utils.report('info', `Starting build process using ${platform}`);
 
-module.exports = config[TARGET];
+module.exports = require(utils.getBuildFile());
