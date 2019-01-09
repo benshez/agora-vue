@@ -88,7 +88,7 @@ const config = {
 				}
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
+				test: /\.(png|jpg|gif|svg|eot|woff|ttf|woff2| |)$/,
 				loader: utils.getLoaders().files,
 				exclude: /node_modules/,
 				options: {
@@ -112,12 +112,6 @@ const config = {
 			template: utils.getPlatformResources('index.html'),
 			favicon: utils.getPlatformResources('favicon.ico'),
 			title: 'Agora moble application',
-			files: {
-				css: [
-					'app.css',
-					'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'
-				]
-			},
 			meta: {
 				viewport: 'width=device-width, initial-scale=1'
 			}
@@ -128,7 +122,5 @@ const config = {
 		hints: false
 	}
 };
-
-utils.report('info', `config for ${platform} is ${JSON.stringify(config)}`);
 
 module.exports = config;

@@ -1,21 +1,21 @@
 'use strict';
-const { resolve, sep, join } = require('path');
+
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const { platformWeb, Utilities, paths } = require('./base.config');
+const { platformWeb, Utilities } = require('./base.config');
 const platform = platformWeb();
 const utils = new Utilities(platform);
 
 const config = {
 	entry: {
-		main: join(paths.app, `main.${platform}.ts`)
+		main: utils.getResource(utils.getPaths().app.resolves, `main.${platform}.ts`)
 	},
 	output: {
-		path: `${paths.dist}${sep}${platform}`
+		path: utils.getPlatformDistributionPath()
 	},
 	optimization: {
 		minimize: true,
@@ -55,41 +55,41 @@ const config = {
 			{
 				test: /\.css$/,
 				exclude: /node_modules/,
-				use: ['vue-style-loader', 'css-loader']
+				use: utils.getLoaders().css
 			},
 			{
 				test: /\.scss$/,
 				exclude: /node_modules/,
-				use: ['vue-style-loader', 'css-loader', 'sass-loader']
+				use: utils.getLoaders().scss
 			},
 			{
 				test: /\.sass$/,
 				exclude: /node_modules/,
-				use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+				use: utils.getLoaders().sass
 			},
 			{
 				test: /\.vue$/,
-				loader: 'vue-loader',
+				loader: utils.getLoaders().vue,
 				exclude: /node_modules/,
 				options: {
 					loaders: {
-						css: ['vue-style-loader', 'css-loader'],
-						scss: ['vue-style-loader', 'css-loader', 'sass-loader'],
-						sass: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+						css: utils.getLoaders().css,
+						scss: utils.getLoaders().scss,
+						sass: utils.getLoaders().sass
 					}
 				}
 			},
 			{
 				test: /\.ts?$/,
-				loader: 'ts-loader',
+				loader: utils.getLoaders().ts,
 				exclude: /node_modules/,
 				options: {
-					appendTsSuffixTo: [/\.vue$/]
+					appendTsSuffixTo: [ /\.vue$/ ]
 				}
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
-				loader: 'file-loader',
+				test: /\.(png|jpg|gif|svg|eot|woff|ttf|woff2| |)$/,
+				loader: utils.getLoaders().files,
 				exclude: /node_modules/,
 				options: {
 					name: '[name].[ext]?[hash]'
@@ -98,39 +98,20 @@ const config = {
 		]
 	},
 	resolve: {
-		alias: {
-			'~': paths.app,
-			'@assets': resolve(paths.app, 'assets'),
-			'@common': resolve(paths.app, 'common'),
-			'@components': resolve(paths.app, 'components'),
-			'@views': resolve(paths.app, 'views'),
-			vue$: 'vue/dist/vue.esm.js'
-		},
+		alias: utils.getAliases(),
 		extensions: utils.getExtensions()
 	},
 	plugins: [
-		new webpack.DefinePlugin({
-			'global.TNS_WEBPACK': 'false',
-			__ENVIRONMENT__: JSON.stringify(utils.getMode()),
-			__IS_NATIVE__: utils.getPlatformIsNative(),
-			__IS_IOS__: utils.getPatformIsIos(),
-			__IS_ANDROID__: utils.getPlatformIsAndroid()
-		}),
+		new webpack.DefinePlugin(utils.globalVariables()),
 		new MiniCssExtractPlugin({
 			filename: `app.css`
 		}),
 		new HtmlWebpackPlugin({
 			inject: true,
 			filename: 'index.html',
-			template: `${paths.resources}${sep}${platform}${sep}index.html`,
-			favicon: `${paths.resources}${sep}${platform}${sep}favicon.ico`,
+			template: utils.getPlatformResources('index.html'),
+			favicon: utils.getPlatformResources('favicon.ico'),
 			title: 'Agora moble application',
-			files: {
-				css: [
-					'app.css',
-					'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'
-				]
-			},
 			meta: {
 				viewport: 'width=device-width, initial-scale=1'
 			}
@@ -141,7 +122,5 @@ const config = {
 		hints: false
 	}
 };
-
-utils.report('info', `config for ${platform} is ${JSON.stringify(config)}`);
 
 module.exports = config;

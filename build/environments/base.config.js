@@ -111,6 +111,10 @@ class Utilities {
 		};
 	}
 
+	getRootDir() {
+		return this.getPlatformIsNative() ? __dirname : resolve(__dirname, '../..');
+	}
+
 	getPaths() {
 		return {
 			app: {
@@ -149,7 +153,7 @@ class Utilities {
 	}
 
 	getResource(folder, resource) {
-		return `${this.resolvePaths(root, folder)}${sep}${resource}`;
+		return `${this.resolvePaths(this.getRootDir(), folder)}${sep}${resource}`;
 	}
 
 	resolvePaths(parent, folder) {
@@ -158,14 +162,14 @@ class Utilities {
 
 	getPlatformResources(resource) {
 		return this.resolvePaths(
-			root,
+			this.getRootDir(),
 			`${this.getPaths().resources.resolves}${sep}${this.getResourcePlatformDirectory()}${sep}${resource}`
 		);
 	}
 
 	getPlatformDistributionPath() {
 		return this.resolvePaths(
-			root,
+			this.getRootDir(),
 			`${this.getPaths().platforms.resolves}${sep}${this.getResourcePlatformDirectory()}`
 		);
 	}

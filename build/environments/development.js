@@ -1,18 +1,18 @@
 'use strict';
-const { resolve, sep, join } = require('path');
+
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const { platformWeb, Utilities, paths } = require('./base.config');
+const { platformWeb, Utilities } = require('./base.config');
 const platform = platformWeb();
 const utils = new Utilities(platform);
 
 const config = {
 	entry: {
-		main: join(paths.app, `main.${platform}.ts`)
+		main: utils.getResource(utils.getPaths().app.resolves, `main.${platform}.ts`)
 	},
 	output: {
 		path: utils.getPlatformDistributionPath()
@@ -51,11 +51,11 @@ const config = {
 				loader: utils.getLoaders().ts,
 				exclude: /node_modules/,
 				options: {
-					appendTsSuffixTo: [/\.vue$/]
+					appendTsSuffixTo: [ /\.vue$/ ]
 				}
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
+				test: /\.(png|jpg|gif|svg|eot|woff|ttf|woff2| |)$/,
 				loader: utils.getLoaders().files,
 				exclude: /node_modules/,
 				options: {
@@ -79,12 +79,6 @@ const config = {
 			template: utils.getPlatformResources('index.html'),
 			favicon: utils.getPlatformResources('favicon.ico'),
 			title: 'Agora moble application',
-			files: {
-				css: [
-					'app.css',
-					'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'
-				]
-			},
 			meta: {
 				viewport: 'width=device-width, initial-scale=1'
 			}
@@ -103,7 +97,5 @@ const config = {
 	},
 	devtool: '#eval-source-map'
 };
-
-utils.report('info', `config for ${platform} is ${JSON.stringify(config)}`);
 
 module.exports = config;
