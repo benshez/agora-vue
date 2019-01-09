@@ -1,18 +1,18 @@
 'use strict';
-const { resolve, sep, join } = require('path');
+
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const { platformWeb, Utilities, paths } = require('./base.config');
+const { platformWeb, Utilities } = require('./base.config');
 const platform = platformWeb();
 const utils = new Utilities(platform);
 
 const config = {
 	entry: {
-		main: join(paths.app, `main.${platform}.ts`)
+		main: utils.getResource(utils.getPaths().app.resolves, `main.${platform}.ts`)
 	},
 	output: {
 		path: utils.getPlatformDistributionPath()
@@ -84,7 +84,7 @@ const config = {
 				loader: utils.getLoaders().ts,
 				exclude: /node_modules/,
 				options: {
-					appendTsSuffixTo: [/\.vue$/]
+					appendTsSuffixTo: [ /\.vue$/ ]
 				}
 			},
 			{

@@ -14,7 +14,7 @@ const platfromAndroid = () => {
 };
 
 const platformsNative = () => {
-	return [platformIos(), platfromAndroid()];
+	return [ platformIos(), platfromAndroid() ];
 };
 
 const platformNative = (env) => {
@@ -25,28 +25,28 @@ const platformWeb = () => {
 	return 'web';
 };
 
-const extentions = ['vue', 'js', 'ts', 'css', 'scss'];
+const extentions = [ 'vue', 'js', 'ts', 'css', 'scss' ];
 
 const loaders = {
 	web: {
-		css: [MiniCssExtractPlugin.loader, 'css-loader'],
-		scss: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-		sass: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax'],
+		css: [ MiniCssExtractPlugin.loader, 'css-loader' ],
+		scss: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader' ],
+		sass: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax' ],
 		ts: 'ts-loader',
 		js: 'babel-loader',
 		vue: 'vue-loader',
 		files: 'file-loader'
 	},
 	native: {
-		css: ['css-loader', 'sass-loader'],
-		scss: ['css-loader', 'sass-loader'],
-		sass: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax'],
+		css: [ 'css-loader', 'sass-loader' ],
+		scss: [ 'css-loader', 'sass-loader' ],
+		sass: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax' ],
 		ts: 'ts-loader',
 		js: 'babel-loader',
 		vue: 'vue-loader',
 		files: 'file-loader'
 	}
-}
+};
 
 const root = resolve(__dirname, '../..');
 
@@ -59,35 +59,35 @@ const paths = {
 	nodeModules: resolve(root, `node_modules`),
 	resources: resolve(root, `app${sep}App_Resources`),
 	environments: `./environments`
-}
+};
 
 class Utilities {
 	constructor(platform) {
 		this.platform = platform;
-		this.report('info', this.getPlatformDistributionPath())
+		this.report('info', this.getPlatformDistributionPath());
 	}
 
-	getAppName () {
+	getAppName() {
 		return 'Agora';
 	}
 
-	getMode () {
+	getMode() {
 		return argv.environment;
 	}
 
-	getPlatformIsNative () {
-		return [platformIos(), platfromAndroid()].includes(this.platform);
+	getPlatformIsNative() {
+		return [ platformIos(), platfromAndroid() ].includes(this.platform);
 	}
 
-	getPlatformIsAndroid () {
+	getPlatformIsAndroid() {
 		return this.platform === platfromAndroid();
 	}
 
-	getPatformIsIos () {
+	getPatformIsIos() {
 		return this.platform === platformIos();
 	}
 
-	getExtensions () {
+	getExtensions() {
 		return extentions.reduce((exts, ext) => {
 			exts.push(`.${this.platform}.${ext}`);
 			if (this.getPlatformIsNative()) exts.push(`.native.${ext}`);
@@ -96,22 +96,22 @@ class Utilities {
 		}, []);
 	}
 
-	getLoaders () {
+	getLoaders() {
 		return loaders[this.platform];
 	}
 
-	getAliases () {
+	getAliases() {
 		return {
 			'~': paths.app,
 			'@assets': resolve(paths.app, 'assets'),
 			'@common': resolve(paths.app, 'common'),
 			'@components': resolve(paths.app, 'components'),
 			'@views': resolve(paths.app, 'views'),
-			vue: (this.getPlatformIsNative()) ? 'nativescript-vue' : 'vue/dist/vue.esm.js'
-		}
+			vue: this.getPlatformIsNative() ? 'nativescript-vue' : 'vue/dist/vue.esm.js'
+		};
 	}
 
-	getPaths () {
+	getPaths() {
 		return {
 			app: {
 				import: `../app`,
@@ -144,23 +144,33 @@ class Utilities {
 			environments: {
 				import: `./environments`,
 				resolves: `build${sep}environments`
-			},
-		}
+			}
+		};
 	}
 
-	resolvePaths (parent, folder) {
+	getResource(folder, resource) {
+		return `${this.resolvePaths(root, folder)}${sep}${resource}`;
+	}
+
+	resolvePaths(parent, folder) {
 		return resolve(parent, folder);
 	}
 
-	getPlatformResources (resource) {
-		return this.resolvePaths(root, `${this.getPaths().resources.resolves}${sep}${this.platform}${sep}${resource}`);
+	getPlatformResources(resource) {
+		return this.resolvePaths(
+			root,
+			`${this.getPaths().resources.resolves}${sep}${this.getResourcePlatformDirectory()}${sep}${resource}`
+		);
 	}
 
-	getPlatformDistributionPath () {
-		return this.resolvePaths(root, `${this.getPaths().platforms.resolves}${sep}${this.platform}`);
+	getPlatformDistributionPath() {
+		return this.resolvePaths(
+			root,
+			`${this.getPaths().platforms.resolves}${sep}${this.getResourcePlatformDirectory()}`
+		);
 	}
 
-	getResourcePlatformDirectory () {
+	getResourcePlatformDirectory() {
 		let directory = '';
 
 		switch (this.platform) {
@@ -178,7 +188,7 @@ class Utilities {
 		return directory;
 	}
 
-	report (reportType = 'info', message = '') {
+	report(reportType = 'info', message = '') {
 		let msg = '';
 
 		switch (reportType) {
@@ -193,7 +203,7 @@ class Utilities {
 		return msg;
 	}
 
-	globalVariables () {
+	globalVariables() {
 		return {
 			'global.TNS_WEBPACK': this.getPlatformIsNative() ? 'true' : 'false',
 			__ENVIRONMENT__: JSON.stringify(this.getMode()),
@@ -203,8 +213,8 @@ class Utilities {
 		};
 	}
 
-	getBuildFile () {
-		return `${this.getPaths().environments.import}/${this.getMode()}`
+	getBuildFile() {
+		return `${this.getPaths().environments.import}/${this.getMode()}`;
 	}
 }
 
