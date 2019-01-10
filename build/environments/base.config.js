@@ -102,8 +102,8 @@ class Utilities {
 
 	getAliases() {
 		return {
-			'~': paths.app,
-			'@assets': resolve(paths.app, 'assets'),
+			'~': this.resolvePaths(this.getRootDir(), 'app'),
+			'@assets': this.resolvePaths(this.getRootDir(), `app${sep}assets`), //resolve(paths.app, 'assets'),
 			'@common': resolve(paths.app, 'common'),
 			'@components': resolve(paths.app, 'components'),
 			'@views': resolve(paths.app, 'views'),
@@ -113,6 +113,10 @@ class Utilities {
 
 	getRootDir() {
 		return this.getPlatformIsNative() ? __dirname : resolve(__dirname, '../..');
+	}
+
+	getAppDir() {
+		return this.resolvePaths(this.getRootDir(), 'app');
 	}
 
 	getPaths() {
