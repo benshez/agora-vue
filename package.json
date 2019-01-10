@@ -13,7 +13,9 @@
 		"web:build:local": "cross-env NODE_ENV=development webpack-dev-server --open --hot --config ./build/webpack.base.conf.js --mode development --platform=web --environment=development",
 		"web:build:development": "cross-env NODE_ENV=development webpack --progress --hide-modules --config ./build/webpack.base.conf.js --mode development --platform=web --environment=development",
 		"web:build:test": "cross-env NODE_ENV=test webpack --progress --hide-modules --config ./build/webpack.base.conf.js --mode development --platform=web --environment=test",
-		"web:build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.base.conf.js --mode production --platform=web --environment=production"
+		"web:build:production": "cross-env NODE_ENV=production webpack --progress --hide-modules --config ./build/webpack.base.conf.js --mode production --platform=web --environment=production",
+		"android:build:local": "tns run android --bundle",
+		"android:build:development": "tns build android --bundle"
 	},
 	"nativescript": {
 		"id": "com.agora.application",

@@ -2,6 +2,7 @@ const { relative, resolve, sep } = require('path');
 
 const webpack = require('webpack');
 const { getExtensions } = require('./build/utils');
+const { platformIos, platfromAndroid, platformsNative, platformNative, Utilities } = require('./build/environments/base.config');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -19,24 +20,35 @@ module.exports = (env) => {
 	// Add your custom Activities, Services and other android app components here.
 	const appComponents = ['tns-core-modules/ui/frame', 'tns-core-modules/ui/frame/activity'];
 
-	const platform = env && ((env.android && 'android') || (env.ios && 'ios'));
+	let pf = '';
+	if (env && (env.android && 'android')) {
+		pf = 'android'
+	};
+
+	if (env && (env.ios && 'ios')) {
+		pf = 'ios'
+	};
+
+	const utils = new Utilities(pf);
+
+	const platform = platformNative(env);
 	if (!platform) {
 		throw new Error('You need to provide a target platform!');
 	}
 
-	const platforms = ['ios', 'android'];
+	const platforms = platformsNative();
 	const projectRoot = __dirname;
 
 	// Default destination inside platforms/<platform>/...
 	const dist = resolve(projectRoot, nsWebpack.getAppPath(platform, projectRoot));
-	const appResourcesPlatformDir = platform === 'android' ? 'Android' : 'iOS';
+	const appResourcesPlatformDir = utils.getResourcePlatformDirectory(); //platform === 'android' ? 'Android' : 'iOS';
 
 	const {
 		// The 'appPath' and 'appResourcesPath' values are fetched from
 		// the nsconfig.json configuration file
 		// when bundling with `tns run android|ios --bundle`.
 		appPath = 'app',
-		appResourcesPath = 'app/App_Resources',
+		//appResourcesPath = 'app/App_Resources',
 
 		// You can provide the following flags when running 'tns run android|ios'
 		snapshot, // --env.snapshot
@@ -47,12 +59,14 @@ module.exports = (env) => {
 
 	const mode = production ? 'production' : 'development';
 
-	const appFullPath = resolve(projectRoot, appPath);
-	const appResourcesFullPath = resolve(projectRoot, appResourcesPath);
+	const appFullPath = utils.getAppDirectory();//resolve(projectRoot, appPath);
+	const appResourcesFullPath = resolve(projectRoot, utils.getResourcePlatformFullDirectory());
 
 	const entryModule = nsWebpack.getEntryModule(appFullPath);
 	const entryPath = `.${sep}${entryModule}`;
-	console.log(`Bundling application for entryPath ${entryPath}...`);
+
+	utils.report('info', `Bundling application for entryPath ${entryPath}...`);
+	//console.log(`Bundling application for entryPath ${entryPath}...`);
 
 	const config = {
 		mode: mode,
@@ -77,7 +91,7 @@ module.exports = (env) => {
 			globalObject: 'global'
 		},
 		resolve: {
-			extensions: getExtensions(platform), // ['.vue', '.js', '.scss', '.css'],
+			extensions: utils.getExtensions(),//getExtensions(platform), // ['.vue', '.js', '.scss', '.css'],
 			// Resolve {N} system modules from tns-core-modules
 			modules: [
 				resolve(__dirname, 'node_modules/tns-core-modules'),
@@ -85,14 +99,15 @@ module.exports = (env) => {
 				'node_modules/tns-core-modules',
 				'node_modules'
 			],
-			alias: {
-				'~': appFullPath,
-				'@assets': resolve(appFullPath, 'assets'),
-				'@common': resolve(appFullPath, 'common'),
-				'@components': resolve(appFullPath, 'components'),
-				'@views': resolve(appFullPath, 'views'),
-				vue: 'nativescript-vue'
-			},
+			alias: utils.getAliases(),
+			// alias: {
+			// 	'~': appFullPath,
+			// 	'@assets': resolve(appFullPath, 'assets'),
+			// 	'@common': resolve(appFullPath, 'common'),
+			// 	'@components': resolve(appFullPath, 'components'),
+			// 	'@views': resolve(appFullPath, 'views'),
+			// 	vue: 'nativescript-vue'
+			// },
 			// don't resolve symlinks to symlinked modules
 			symlinks: false
 		},
@@ -130,6 +145,7 @@ module.exports = (env) => {
 			minimizer: [
 				new UglifyJsPlugin({
 					uglifyOptions: {
+						// @ts-ignore
 						parallel: true,
 						cache: true,
 						output: {
@@ -174,11 +190,11 @@ module.exports = (env) => {
 
 				{
 					test: /\.css$/,
-					use: ['css-loader', 'sass-loader']
+					use: utils.getLoaders().css
 				},
 				{
 					test: /\.scss$/,
-					use: ['css-loader', 'sass-loader']
+					use: utils.getLoaders().scss
 				},
 				{
 					test: /\.js$/,
@@ -186,7 +202,7 @@ module.exports = (env) => {
 				},
 				{
 					test: /\.vue$/,
-					loader: 'vue-loader',
+					loader: utils.getLoaders().vue,
 					options: {
 						// loaders: {
 						// 	css: ['css-loader', 'sass-loader'],
@@ -205,7 +221,7 @@ module.exports = (env) => {
 				},
 				{
 					test: /\.ts$/,
-					loader: 'ts-loader',
+					loader: utils.getLoaders().ts,
 					exclude: /node_modules/,
 					options: {
 						appendTsSuffixTo: [/\.vue$/]
@@ -221,17 +237,20 @@ module.exports = (env) => {
 			// make sure to include the plugin!
 			new VueLoaderPlugin(),
 			// Define useful constants like TNS_WEBPACK
-			new webpack.DefinePlugin({
-				'global.TNS_WEBPACK': 'true',
-				__ENVIRONMENT__: JSON.stringify(mode),
-				__IS_NATIVE__: true
-			}),
+			new webpack.DefinePlugin(utils.globalVariables()),
+
+			// new webpack.DefinePlugin({
+			// 	'global.TNS_WEBPACK': 'true',
+			// 	__ENVIRONMENT__: JSON.stringify(mode),
+			// 	__IS_NATIVE__: true
+			// }),
+
 			// Remove all files from the out dir.
 			new CleanWebpackPlugin([`${dist}/**/*`]),
 			// Copy native app resources to out dir.
 			new CopyWebpackPlugin([
 				{
-					from: `${appResourcesFullPath}/${appResourcesPlatformDir}`,
+					from: `${appResourcesFullPath}`,
 					to: `${dist}/App_Resources/${appResourcesPlatformDir}`,
 					context: projectRoot
 				}
@@ -241,15 +260,18 @@ module.exports = (env) => {
 				ignore: [`${relative(appPath, appResourcesFullPath)}/**`]
 			}),
 			// Generate a bundle starter script and activate it in package.json
+			// @ts-ignore
 			new nsWebpack.GenerateBundleStarterPlugin(['./vendor', './bundle']),
 			// For instructions on how to set up workers with webpack
 			// check out https://github.com/nativescript/worker-loader
 			new NativeScriptWorkerPlugin(),
+			// @ts-ignore
 			new nsWebpack.PlatformFSPlugin({
 				platform,
 				platforms
 			}),
 			// Does IPC communication with the {N} CLI to notify events when running in watch mode.
+			// @ts-ignore
 			new nsWebpack.WatchStateLoggerPlugin()
 		]
 	};
@@ -269,6 +291,7 @@ module.exports = (env) => {
 
 	if (snapshot) {
 		config.plugins.push(
+			// @ts-ignore
 			new nsWebpack.NativeScriptSnapshotPlugin({
 				chunk: 'vendor',
 				requireModules: ['tns-core-modules/bundle-entry-points'],
