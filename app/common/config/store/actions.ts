@@ -1,5 +1,5 @@
 import { ActionTree } from 'vuex';
-import { IAppConfig } from '@common/config/interfaces/IAppConfig';
+import { IApplicationConfig } from '~/common/config/interfaces/IApplicationConfig';
 import { IRootState } from '@common/base/store/interfaces/IRootState';
 
-export const actions: ActionTree<Array<IAppConfig>, IRootState> = {};
+export const actions: ActionTree<IApplicationConfig, IRootState> = {};

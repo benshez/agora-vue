@@ -6,7 +6,6 @@ import { ITranslation } from '@common/i18n/interfaces/ITranslation';
 @Component({
 	computed: mapState({
 		translation: (state: IRootState) => {
-			debugger;
 			return state.Language.translation;
 		}
 	})

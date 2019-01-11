@@ -1,3 +1,3 @@
 import { MutationTree } from 'vuex';
-import { IAppConfig } from '@common/config/interfaces/IAppConfig';
-export const mutations: MutationTree<Array<IAppConfig>> = {};
+import { IApplicationConfig } from '~/common/config/interfaces/IApplicationConfig';
+export const mutations: MutationTree<IApplicationConfig> = {};

@@ -1,7 +1,7 @@
 import { IAppSettings } from '@common/config/interfaces/IAppSettings';
-import { IAppConfig } from '@common/config/interfaces/IAppConfig';
+import { IApplicationConfig } from '~/common/config/interfaces/IApplicationConfig';
 
-export class Config implements IAppConfig {
+export class Config implements IApplicationConfig {
 	public static IS_PRODUCTION(): boolean {
 		return __ENVIRONMENT__ === 'production';
 	}

@@ -14,7 +14,7 @@ const platfromAndroid = () => {
 };
 
 const platformsNative = () => {
-	return [platformIos(), platfromAndroid()];
+	return [ platformIos(), platfromAndroid() ];
 };
 
 const platformNative = (env) => {
@@ -25,22 +25,22 @@ const platformWeb = () => {
 	return 'web';
 };
 
-const extentions = ['vue', 'js', 'ts', 'css', 'scss'];
+const extentions = [ 'vue', 'js', 'ts', 'css', 'scss' ];
 
 const loaders = {
 	web: {
-		css: [MiniCssExtractPlugin.loader, 'css-loader'],
-		scss: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
-		sass: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax'],
+		css: [ MiniCssExtractPlugin.loader, 'css-loader' ],
+		scss: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader' ],
+		sass: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax' ],
 		ts: 'ts-loader',
 		js: 'babel-loader',
 		vue: 'vue-loader',
 		files: 'file-loader'
 	},
 	native: {
-		css: ['css-loader', 'sass-loader'],
-		scss: ['css-loader', 'sass-loader'],
-		sass: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax'],
+		css: [ 'css-loader', 'sass-loader' ],
+		scss: [ 'css-loader', 'sass-loader' ],
+		sass: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader?indentedSyntax' ],
 		ts: 'ts-loader',
 		js: 'babel-loader',
 		vue: 'vue-loader',
@@ -54,27 +54,27 @@ class Utilities {
 		this.report('info', platform);
 	}
 
-	getAppName () {
+	getAppName() {
 		return 'Agora';
 	}
 
-	getMode () {
+	getMode() {
 		return argv.environment;
 	}
 
-	getPlatformIsNative () {
-		return [platformIos(), platfromAndroid()].includes(this.platform);
+	getPlatformIsNative() {
+		return [ platformIos(), platfromAndroid() ].includes(this.platform);
 	}
 
-	getPlatformIsAndroid () {
+	getPlatformIsAndroid() {
 		return this.platform === platfromAndroid();
 	}
 
-	getPatformIsIos () {
+	getPatformIsIos() {
 		return this.platform === platformIos();
 	}
 
-	getExtensions () {
+	getExtensions() {
 		return extentions.reduce((exts, ext) => {
 			exts.push(`.${this.platform}.${ext}`);
 			if (this.getPlatformIsNative()) exts.push(`.native.${ext}`);
@@ -83,12 +83,12 @@ class Utilities {
 		}, []);
 	}
 
-	getLoaders () {
+	getLoaders() {
 		if (this.getPlatformIsNative()) return loaders['native'];
 		return loaders[this.platform];
 	}
 
-	getAliases () {
+	getAliases() {
 		return {
 			// '~': this.resolvePaths(this.getRootDir(), 'app'),
 			// '@assets': this.resolvePaths(this.getRootDir(), `app${sep}assets`),
@@ -104,16 +104,16 @@ class Utilities {
 		};
 	}
 
-	getRootDir () {
+	getRootDir() {
 		//return this.getPlatformIsNative() ? __dirname : resolve(__dirname, '../..');
 		return resolve(__dirname, '../..');
 	}
 
-	getAppDirectory () {
+	getAppDirectory() {
 		return this.resolvePaths(this.getRootDir(), 'app');
 	}
 
-	getPaths () {
+	getPaths() {
 		return {
 			app: {
 				import: `../app`,
@@ -150,33 +150,33 @@ class Utilities {
 		};
 	}
 
-	getResource (folder, resource) {
+	getResource(folder, resource) {
 		return `${this.resolvePaths(this.getRootDir(), folder)}${sep}${resource}`;
 	}
 
-	resolvePaths (parent, folder) {
+	resolvePaths(parent, folder) {
 		return resolve(parent, folder);
 	}
 
-	getPlatformResources (resource) {
+	getPlatformResources(resource) {
 		return this.resolvePaths(
 			this.getRootDir(),
 			`${this.getPaths().resources.resolves}${sep}${this.getResourcePlatformDirectory()}${sep}${resource}`
 		);
 	}
 
-	getPlatformDistributionPath () {
+	getPlatformDistributionPath() {
 		return this.resolvePaths(
 			this.getRootDir(),
 			`${this.getPaths().platforms.resolves}${sep}${this.getResourcePlatformDirectory()}`
 		);
 	}
 
-	getResourcePlatformFullDirectory () {
+	getResourcePlatformFullDirectory() {
 		return `${this.getPaths().resources.resolves}${sep}${this.getResourcePlatformDirectory()}`;
 	}
 
-	getResourcePlatformDirectory () {
+	getResourcePlatformDirectory() {
 		let directory = '';
 
 		switch (this.platform) {
@@ -194,7 +194,7 @@ class Utilities {
 		return directory;
 	}
 
-	report (reportType = 'info', message = '') {
+	report(reportType = 'info', message = '') {
 		let msg = '';
 
 		switch (reportType) {
@@ -209,17 +209,17 @@ class Utilities {
 		return msg;
 	}
 
-	globalVariables () {
+	globalVariables() {
 		return {
 			'global.TNS_WEBPACK': this.getPlatformIsNative() ? 'true' : 'false',
 			__ENVIRONMENT__: JSON.stringify(this.getMode()),
 			__IS_NATIVE__: this.getPlatformIsNative(),
 			__IS_IOS__: this.getPatformIsIos(),
-			__IS_ANDROID__: this.getPlatformIsAndroid()
+			__IS_ANDROID__: this.getPlatformthis.$store.state.ApplicationConfig.IS_ANDROID()()
 		};
 	}
 
-	getBuildFile () {
+	getBuildFile() {
 		return `${this.getPaths().environments.import}/${this.getMode()}`;
 	}
 }

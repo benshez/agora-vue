@@ -1,5 +1,5 @@
 <template>
-  <Label :text="$isAndroid"></Label>
+  <Label :text="this.$store.state.ApplicationConfig.IS_ANDROID()"></Label>
 </template>
 
 <script lang="ts">

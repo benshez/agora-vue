@@ -2,7 +2,7 @@
   <Page class="page">
     <ActionBar android.systemIcon="ic_menu_back" class="action-bar" :title="translation.AppName">
       <NavigationButton
-        v-if="$isAndroid"
+        v-if="this.$store.state.ApplicationConfig.IS_ANDROID()"
         text="Menu"
         icon="res://ic_menu_white_24dp"
         @tap="$refs.drawer.nativeView.toggleDrawerState()"
@@ -14,7 +14,12 @@
         icon="res://ic_menu"
         @tap="$refs.drawer.nativeView.toggleDrawerState()"
       ></ActionItem>
-      <ActionItem v-show="$isIOS && showBack" @tap="goBack" ios.position="right" text="Back"></ActionItem>
+      <ActionItem
+        v-show="this.$store.state.ApplicationConfig.IS_IOS() && showBack"
+        @tap="goBack"
+        ios.position="right"
+        text="Back"
+      ></ActionItem>
     </ActionBar>
     <RadSideDrawer id="drawer" ref="drawer" showOverNavigation="true">
       <StackLayout class="drawer-content" ~drawerContent>
