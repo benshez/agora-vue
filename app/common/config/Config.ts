@@ -1,23 +1,24 @@
 import { IAppSettings } from '@common/config/interfaces/IAppSettings';
+import { IAppConfig } from '@common/config/interfaces/IAppConfig';
 
-export class Config {
-	public static IS_PRODUCTION(): Boolean {
+export class Config implements IAppConfig {
+	public static IS_PRODUCTION(): boolean {
 		return __ENVIRONMENT__ === 'production';
 	}
 
-	public static IS_DEV(): Boolean {
+	public static IS_DEV(): boolean {
 		return __ENVIRONMENT__ === 'development';
 	}
 
-	public static IS_NATIVE(): Boolean {
+	public static IS_NATIVE(): boolean {
 		return __IS_NATIVE__;
 	}
 
-	public static IS_ANDROID(): Boolean {
+	public static IS_ANDROID(): boolean {
 		return __IS_ANDROID__;
 	}
 
-	public static IS_IOS(): Boolean {
+	public static IS_IOS(): boolean {
 		return __IS_IOS__;
 	}
 

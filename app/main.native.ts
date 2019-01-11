@@ -15,7 +15,7 @@ filters();
 import './styles';
 
 // Prints Vue logs when --env.production is *NOT* set while building
-Vue.config.silent = !Config.IS_PRODUCTION();
+Vue.config.silent = Config.IS_PRODUCTION();
 
 new Vue({
 	store,
