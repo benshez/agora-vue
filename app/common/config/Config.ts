@@ -1,5 +1,6 @@
 import { IAppSettings } from '@common/config/interfaces/IAppSettings';
-import { IApplicationConfig } from '~/common/config/interfaces/IApplicationConfig';
+import { IApplicationConfig } from '@common/config/interfaces/IApplicationConfig';
+import { Apis } from '@common/config/private/Apis';
 
 export class Config implements IApplicationConfig {
 	public static IS_PRODUCTION(): boolean {
@@ -32,6 +33,7 @@ export class Config implements IApplicationConfig {
 			GET_USER_ROLES_ROUTE: '' //`${AgoraConfiguration.APP_API()}/roles/`
 		},
 		STORE_NAMESPACED: true,
-		STORE_STRICT_MODE: true
+		STORE_STRICT_MODE: true,
+		APIS: Apis
 	};
 }

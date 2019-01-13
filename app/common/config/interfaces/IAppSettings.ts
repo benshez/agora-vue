@@ -6,4 +6,5 @@ export interface IAppSettings {
 	APP_ROUTES: IApplicationRoutes;
 	STORE_NAMESPACED: boolean;
 	STORE_STRICT_MODE: boolean;
+	APIS: any;
 }

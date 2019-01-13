@@ -2,6 +2,8 @@
 @import './styles/variables';
 @import './styles/web/icons/material-icons';
 @import '~vuetify/dist/vuetify.min.css';
+@import url('https://api.mapbox.com/mapbox-gl-js/v0.52.0/mapbox-gl.css');
+@import url('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css');
 
 html,
 body {
@@ -33,8 +35,6 @@ body {
 	img {
 		align-self: center;
 	}
-
-
 }
 
 button {
@@ -56,5 +56,17 @@ button {
 			top: 0;
 			bottom: 0;
 		}
+	}
+}
+
+.map-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	#map {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 100%;
 	}
 }

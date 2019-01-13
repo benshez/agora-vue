@@ -100,7 +100,8 @@ class Utilities {
 			'@common': this.resolvePaths(this.getAppDirectory(), `common`),
 			'@components': this.resolvePaths(this.getAppDirectory(), `components`),
 			'@views': this.resolvePaths(this.getAppDirectory(), `views`),
-			vue: this.getPlatformIsNative() ? 'nativescript-vue' : 'vue/dist/vue.esm.js'
+			vue: this.getPlatformIsNative() ? 'nativescript-vue' : 'vue/dist/vue.esm.js',
+			vueMapBoxMap: this.getPlatformIsNative() ? '' : 'vue-mapbox-map/vue-mapbox-map.umd.js'
 		};
 	}
 
@@ -215,7 +216,7 @@ class Utilities {
 			__ENVIRONMENT__: JSON.stringify(this.getMode()),
 			__IS_NATIVE__: this.getPlatformIsNative(),
 			__IS_IOS__: this.getPatformIsIos(),
-			__IS_ANDROID__: this.getPlatformthis.$store.state.ApplicationConfig.IS_ANDROID()()
+			__IS_ANDROID__: this.getPlatformIsAndroid()
 		};
 	}
 

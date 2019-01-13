@@ -1,10 +1,16 @@
 <template>
-  <Label :text="this.$store.state.ApplicationConfig.IS_ANDROID()"></Label>
+  <Page class="page">
+    <ActionBar class="action-bar" title="Vue Mapbox Example"></ActionBar>
+    <GridLayout></GridLayout>
+  </Page>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import RootState from "@common/base/store/mixins/RootState";
 
-@Component({})
+@Component({
+  mixins: [RootState]
+})
 export default class AgoraHome extends Vue {}
 </script>

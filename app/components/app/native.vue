@@ -1,8 +1,12 @@
 <template>
   <Page class="page">
-    <ActionBar android.systemIcon="ic_menu_back" class="action-bar" :title="translation.AppName">
+    <ActionBar
+      android.systemIcon="ic_menu_back"
+      class="action-bar"
+      :title="rootState.Language.translation.AppName"
+    >
       <NavigationButton
-        v-if="this.$store.state.ApplicationConfig.IS_ANDROID()"
+        v-if="rootState.ApplicationConfig.IS_ANDROID()"
         text="Menu"
         icon="res://ic_menu_white_24dp"
         @tap="$refs.drawer.nativeView.toggleDrawerState()"
@@ -15,7 +19,7 @@
         @tap="$refs.drawer.nativeView.toggleDrawerState()"
       ></ActionItem>
       <ActionItem
-        v-show="this.$store.state.ApplicationConfig.IS_IOS() && showBack"
+        v-show="rootState.ApplicationConfig.IS_IOS() && showBack"
         @tap="goBack"
         ios.position="right"
         text="Back"
@@ -23,14 +27,17 @@
     </ActionBar>
     <RadSideDrawer id="drawer" ref="drawer" showOverNavigation="true">
       <StackLayout class="drawer-content" ~drawerContent>
-        <ListView for="route in routes">
+        <ListView class="list-group" for="route in rootState.Routes">
           <v-template>
             <StackLayout
               @tap="goToPage(route.path)"
               orientation="horizontal"
               class="sidedrawer-list-group"
             >
-              <Label :text="{state: translation, key: route.meta.translationKey} | translate"></Label>
+              <Label
+                class="list-group-item-text m-10"
+                :text="{state: rootState.Language.translation, key: route.meta.translationKey} | translate"
+              ></Label>
             </StackLayout>
           </v-template>
         </ListView>
@@ -44,20 +51,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { mapState } from "vuex";
-import AppBase from "@components/app/base";
-import { IRootState } from "@common/base/store/interfaces/IRootState";
-import { Config } from "@common/config/Config";
+import RootState from "@common/base/store/mixins/RootState";
 
 @Component({
-  mixins: [AppBase],
-  computed: {
-    ...mapState({
-      routes: (state: IRootState) => {
-        return state.Routes;
-      }
-    })
-  }
+  mixins: [RootState]
 })
 export default class App extends Vue {
   goBack() {

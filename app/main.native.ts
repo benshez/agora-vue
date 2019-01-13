@@ -18,8 +18,8 @@ import './styles';
 Vue.config.silent = Config.IS_PRODUCTION();
 
 new Vue({
-	store,
 	router: routes,
+	store,
 	computed: {
 		pageClasses: function() {
 			return {

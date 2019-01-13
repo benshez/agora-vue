@@ -1,23 +1,13 @@
-<template>
-  <v-tooltip right>
-    <v-btn
-      icon
-      large
-      :href="source"
-      target="_blank"
-      slot="activator"
-    >
-      <v-icon large>code</v-icon>
-    </v-btn>
-    <span>Source</span>
-  </v-tooltip>
-</template>
+<template></template>
 
 <script lang="ts">
-  import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
+import RootState from "@common/base/store/mixins/RootState";
 
-  @Component({})
-  export default class AgoraHome extends Vue {
-    @Prop(Object) source: String;
-  }
+@Component({
+  mixins: [RootState]
+})
+export default class AgoraHome extends Vue {
+  @Prop(Object) source: String;
+}
 </script>
