@@ -16,20 +16,8 @@ export interface ITranslation {
 		about: {
 			description: string;
 		};
-		claims: {
+		map: {
 			description: string;
-			create: {
-				description: string;
-			};
-		};
-		finance: {
-			description: string;
-			resubmissions: {
-				description: string;
-			};
-			payments: {
-				description: string;
-			};
 		};
 	};
 	User: {

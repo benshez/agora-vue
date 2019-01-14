@@ -20,20 +20,8 @@ export const af: ILanguage = {
 			about: {
 				description: '(A)About'
 			},
-			claims: {
-				description: '(A)Claims',
-				create: {
-					description: '(A)Submit a new claim'
-				}
-			},
-			finance: {
-				description: '(A)Finance',
-				resubmissions: {
-					description: '(A)Resubmission'
-				},
-				payments: {
-					description: '(A)Make a payment'
-				}
+			map: {
+				description: '(A) Map'
 			}
 		},
 		User: {

@@ -1,17 +1,16 @@
 <template>
-  <agora-header ref="drawer" />
+  <GridLayout class="body">
+    <Label text="AgoraAbout"></Label>
+
+  </GridLayout>
 </template>
 
 <script lang="ts">
   import { Vue, Component, Prop } from "vue-property-decorator";
   import RootState from "@common/base/store/mixins/RootState";
-  import AgoraHeader from "@components/header/native.vue";
 
   @Component({
-    mixins: [RootState],
-    components: {
-      AgoraHeader
-    }
+    mixins: [RootState]
   })
-  export default class App extends Vue {}
+  export default class AgoraMap extends Vue {}
 </script>
