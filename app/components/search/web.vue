@@ -21,12 +21,12 @@
     <v-expand-transition>
       <v-list>
         <v-list-tile
-          v-for="(mapppedItem, i) in mapppedItems.key"
+          v-for="(mappedItem, i) in mappedItems.key"
           :key="i"
         >
           <v-list-tile-content>
-            <v-list-tile-title v-text="mapppedItem.key"></v-list-tile-title>
-            <v-list-tile-sub-title v-text="mapppedItem.value"></v-list-tile-sub-title>
+            <v-list-tile-title v-text="mappedItem.key"></v-list-tile-title>
+            <v-list-tile-sub-title v-text="mappedItem.value"></v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
