@@ -50,17 +50,21 @@ import { IApplicationConfig } from "@common/config/interfaces/IApplicationConfig
     this.scene.accessToken = config.APP_SETTINGS.APIS.MAP_BOX_API().Token;
     this.scene.lng = coords.longitude;
     this.scene.lat = coords.latitude;
+    this.scene.center = coords.center;
 
     // @ts-ignore
     mapboxgl.accessToken = this.scene.accessToken;
     var map = new mapboxgl.Map({
       container: "map", // container id
       style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-      center: [this.scene.lng, this.scene.lat], // starting position [lng, lat]
+      center: this.scene.center(), // starting position [lng, lat]
       zoom: 13, // starting zoom
       pitch: 20,
       bearing: 0
     });
+
+    var x: mapboxgl.LngLatLike = [coords.longitude, coords.latitude];
+    new mapboxgl.Marker().setLngLat(this.scene.center()).addTo(map);
   }
 })
 export default class AgoraMap extends Vue {
@@ -71,7 +75,8 @@ export default class AgoraMap extends Vue {
     lat: 40.756027,
     zoom: 13,
     pitch: 20,
-    bearing: 0
+    bearing: 0,
+    center: []
   };
 }
 </script>
