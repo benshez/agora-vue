@@ -70,7 +70,7 @@ const config = {
 			{
 				test: /\.vue$/,
 				loader: utils.getLoaders().vue,
-				exclude: /node_modules/,
+				//exclude: /node_modules/,
 				options: {
 					loaders: {
 						css: utils.getLoaders().css,
@@ -84,7 +84,7 @@ const config = {
 				loader: utils.getLoaders().ts,
 				exclude: /node_modules/,
 				options: {
-					appendTsSuffixTo: [ /\.vue$/ ]
+					appendTsSuffixTo: [/\.vue$/]
 				}
 			},
 			{
@@ -94,6 +94,21 @@ const config = {
 				options: {
 					name: '[name].[ext]?[hash]'
 				}
+			},
+			{
+				test: /\.js$/,
+				include: path.resolve(__dirname, 'node_modules/mapbox-gl/js/render/painter/use_program.js'),
+				loader: 'transform/cacheable?brfs'
+			},
+			{
+				test: /\.js$/,
+				include: path.resolve(__dirname, 'node_modules/mapbox-gl/js/render/shaders.js'),
+				loader: 'transform/cacheable?brfs'
+			},
+			{
+				test: /\.js$/,
+				include: path.resolve(__dirname, 'node_modules/webworkify/index.js'),
+				loader: 'worker'
 			}
 		]
 	},

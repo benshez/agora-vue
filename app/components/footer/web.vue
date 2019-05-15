@@ -1,8 +1,10 @@
 <template>
   <v-footer color="blue-grey" class="white--text" app>
-    <span>{{translation.AppName}}</span>
-    <v-spacer></v-spacer>
-    <span>{{translation.CopyRight()}}</span>
+    <div class="v-toolbar__content">
+      <span>{{translation.AppName}}</span>
+      <v-spacer></v-spacer>
+      <span>{{translation.CopyRight()}}</span>
+    </div>
   </v-footer>
 </template>
 

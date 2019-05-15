@@ -1,16 +1,23 @@
-import { Module } from 'vuex';
-import { IRootState } from '@common/base/store/interfaces/IRootState';
+import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators';
+import { Store } from 'vuex';
 import { IDynanicComponent } from '@common/events/interfaces/IDynanicComponent';
-import { mutations } from '@common/events/store/mutation';
-import { actions } from '@common/events/store/actions';
-import { state } from '@common/events/store/state';
-import { getters } from '@common/events/store/getters';
+import { DYNAMIC_COMPONENT_TOGGLE } from '@common/base/store/MutationTypes';
 import { Config } from '@common/config/Config';
 
-export const DynamicComponent: Module<IDynanicComponent, IRootState> = {
-	namespaced: Config.APP_SETTINGS.STORE_NAMESPACED,
-	state,
-	getters,
-	mutations,
-	actions
-};
+@Module({ name: 'DynamicComponent', namespaced: Config.APP_SETTINGS.STORE_NAMESPACED, })
+export default class DynamicComponent extends VuexModule {
+  current: IDynanicComponent = {
+    name: '',
+    key: ''
+  };
+
+  @Mutation [DYNAMIC_COMPONENT_TOGGLE](component: IDynanicComponent) {
+    this.current = component;
+  }
+
+  @Action({ commit: DYNAMIC_COMPONENT_TOGGLE }) loadComponent(component: IDynanicComponent) {
+
+  }
+}
+
+export const getStore = (store?: Store<IDynanicComponent>): DynamicComponent => getModule(DynamicComponent, store);

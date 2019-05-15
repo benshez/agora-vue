@@ -1,4 +1,5 @@
 import { IApplicationRoutes } from '@common/config/interfaces/IApplicationRoutes';
+
 export interface IAppSettings {
 	API: string;
 	APP_NAME: string;

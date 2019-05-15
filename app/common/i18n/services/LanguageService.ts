@@ -1,8 +1,8 @@
-import { I18nResolver } from 'i18n-ts';
-import _ from 'lodash';
-import { ILanguage } from '@common/i18n/interfaces/ILanguage';
-import { ITranslation } from '@common/i18n/interfaces/ITranslation';
-import { en, af } from '@common/i18n/languages';
+import { I18nResolver } from "i18n-ts";
+import _ from "lodash";
+import { ILanguage } from "@common/i18n/interfaces/ILanguage";
+import { ITranslation } from "@common/i18n/interfaces/ITranslation";
+import { en, af } from "@common/i18n/languages";
 
 export class LanguageService {
 

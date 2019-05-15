@@ -1,17 +1,19 @@
-import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
-import { IRootState } from '@common/base/store/interfaces/IRootState';
-import { Language } from '@common/i18n/store';
-import { DynamicComponent } from '@common/events/store';
-import { ApplicationConfig } from '@common/config/store';
-import { Routes } from '@common/router/store';
-import { Config } from '@common/config/Config';
+import Vue from "vue";
+import Vuex from "vuex";
+import { IRootState } from "@common/base/store/interfaces/IRootState";
+import { Config } from "@common/config/Config";
+import Routes from "@common/router/store";
+import Language from "@common/i18n/store";
+import ApplicationConfiguration from "@common/config/store";
+import DynamicComponent from "@common/events/store";
+import Location from "@common/search/store";
+import GeoLocation from "@common/location/store";
 
 Vue.use(Vuex);
 
-const store: StoreOptions<IRootState> = {
-	modules: { ApplicationConfig, Routes, Language, DynamicComponent },
-	strict: Config.APP_SETTINGS.STORE_STRICT_MODE
-};
-
-export default new Vuex.Store<IRootState>(store);
+export default new Vuex.Store<IRootState>(
+	{
+		modules: { ApplicationConfiguration, Routes, Language, DynamicComponent, Location, GeoLocation },
+		strict: Config.APP_SETTINGS.STORE_STRICT_MODE
+	}
+);

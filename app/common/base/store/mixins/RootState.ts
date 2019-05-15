@@ -1,6 +1,6 @@
-import { Vue, Component } from 'vue-property-decorator';
-import { mapState } from 'vuex';
-import { IRootState } from '@common/base/store/interfaces/IRootState';
+import { Vue, Component } from "vue-property-decorator";
+import { mapState } from "vuex";
+import { IRootState } from "@common/base/store/interfaces/IRootState";
 
 @Component({
 	computed: {
@@ -11,4 +11,4 @@ import { IRootState } from '@common/base/store/interfaces/IRootState';
 		})
 	}
 })
-export default class RootState extends Vue {}
+export default class RootState extends Vue { }

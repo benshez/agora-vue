@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <agora-header :drawer="drawer" :translation="rootState.Language.translation"/>
+    <agora-header :drawer="drawer" :translation="rootState.Language.current.translation"/>
 
     <v-content>
       <v-container fluid fill-height>
@@ -8,7 +8,7 @@
       </v-container>
     </v-content>
 
-    <agora-footer :translation="rootState.Language.translation"/>
+    <agora-footer :translation="rootState.Language.current.translation"/>
   </v-app>
 </template>
 

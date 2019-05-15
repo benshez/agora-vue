@@ -1,7 +1,10 @@
 import { Vue, Component, Prop, Watch, Mixins } from "vue-property-decorator";
-import axios from "axios";
 import _ from "lodash";
 import RootState from "@common/base/store/mixins/RootState";
+import { getStore as getConfigStore } from "~/common/config/store";
+import { IApplicationConfig, } from "@common/config/interfaces/IApplicationConfig";
+import { getStore as getLocationStore } from "@common/search/store";
+import { ILocations } from "@common/search/interfaces/ILocations";
 
 @Component
 export default class AgoraSearchBase extends Mixins(RootState) {
@@ -10,38 +13,41 @@ export default class AgoraSearchBase extends Mixins(RootState) {
   @Prop(Object) loading: boolean = false;
   @Prop(Object) model: any = null;
   @Prop(Object) search: any = null;
+  @Prop(Object) searchString: string = null;
   @Prop(Object) features: any = [];
-  @Prop(Object) accessToken: String = this.$store.state.ApplicationConfig.APP_SETTINGS.APIS.MAP_BOX_API().Token
+  @Prop(Object) config: IApplicationConfig = getConfigStore(this.$store).current
 
   @Watch("search")
-  async OnSearchChanged(val: string, oldVal: string) {
-    if (this.items && this.items.length > 0) return;
-    if (!val || val.length < 6) return;
+  async OnSearchChanged(searchingForString: string, oldVal: string) {
+    this.searchString = searchingForString;
 
-    if (this.loading) return;
+    if (!this.canDoSearch) return
+    //if (this.items && this.items.length > 0) return;
+    //if (!val || val.length < 6) return;
+
+    //if (this.loading) return;
 
     this.loading = true;
+    if (!this.config) this.config = getConfigStore(this.$store).current
+    let url = this.config.APP_SETTINGS.APIS.MAP_BOX_API().Url(this.searchString);
 
-    let url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${val}.json?access_token=${this.accessToken}`;
+    // const matched = (x: any) => ({
+    //   on: () => matched(x),
+    //   otherwise: () => x,
+    // })
+    // const match = (x: any) => ({
+    //   on: (pred: any, fn: any) => (pred(x) as any ? matched(fn(x)) as any : match(x) as any),
+    //   otherwise: (fn: any) => fn(x),
+    // })
 
-    const matched = (x: any) => ({
-      on: () => matched(x),
-      otherwise: () => x,
-    })
-    const match = (x: any) => ({
-      on: (pred: any, fn: any) => (pred(x) as any ? matched(fn(x)) as any : match(x) as any),
-      otherwise: (fn: any) => fn(x),
-    })
+    // let x = match(0.5)
+    //   .on((x: number) => x < 0, () => 0)
+    //   .on((x: number) => x >= 0 && x <= 1, () => 1)
+    //   .otherwise((x: number) => x * 10)
 
-    let x = match(0.5)
-      .on((x: number) => x < 0, () => 0)
-      .on((x: number) => x >= 0 && x <= 1, () => 1)
-      .otherwise((x: number) => x * 10)
-
-    debugger
     try {
-      const response = await axios.get(url);
-      this.features = response.data.features;
+      const response: ILocations = await getLocationStore(this.$store).loadLocation(url);
+      this.features = response.features;
     } catch (error) {
       console.error(error);
     } finally {
@@ -49,11 +55,15 @@ export default class AgoraSearchBase extends Mixins(RootState) {
     }
   }
 
+  get canDoSearch() {
+    if (!this.searchString || this.searchString.length < 6) return false;
+    return !this.loading;
+  }
   get items() {
     return this.features.map((feature: any) => {
       const Description = _.truncate(feature.place_name, {
-        'length': this.descriptionLimit,
-        'omission': '...'
+        "length": this.descriptionLimit,
+        "omission": "..."
       });
       return Object.assign({}, feature, { Description });
     });
@@ -66,7 +76,7 @@ export default class AgoraSearchBase extends Mixins(RootState) {
     return Object.keys(mappedModel).map((key) => {
       return {
         key,
-        value: mappedModel[key] || 'n/a'
+        value: mappedModel[key] || "n/a"
       };
     });
   }

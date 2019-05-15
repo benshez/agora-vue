@@ -1,3 +1,5 @@
 import { IAppSettings } from '@common/config/interfaces/IAppSettings';
 
-export interface IApplicationConfig {}
+export interface IApplicationConfig {
+    APP_SETTINGS: IAppSettings
+}
