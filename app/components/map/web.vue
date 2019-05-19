@@ -3,13 +3,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import * as mapboxgl from "mapbox-gl";
-import { Map } from "mapbox-gl";
 import RootState from "@common/base/store/mixins/RootState";
 import { getStore as getGeoLocationStore } from "@common/location/store";
 import { getStore as getConfigStore } from "@common/config/store";
 import { IGeolocation } from "@common/location/interfaces/IGeolocation";
+import { IScene } from "@common/location/interfaces/IScene";
+import { IMapScene } from "@common/location/interfaces/IMapScene";
 import { IApplicationConfig } from "@common/config/interfaces/IApplicationConfig";
 
 @Component({
@@ -42,41 +43,165 @@ import { IApplicationConfig } from "@common/config/interfaces/IApplicationConfig
       });
     }
   },
-  async created() {
+  created() {
     let config: IApplicationConfig = getConfigStore(this.$store).current;
-    let coords: IGeolocation = await getGeoLocationStore(
-      this.$store
-    ).loadCurrentLocation();
     this.scene.accessToken = config.APP_SETTINGS.APIS.MAP_BOX_API().Token;
-    this.scene.lng = coords.longitude;
-    this.scene.lat = coords.latitude;
-    this.scene.center = coords.center;
-
-    // @ts-ignore
-    mapboxgl.accessToken = this.scene.accessToken;
-    var map = new mapboxgl.Map({
-      container: "map", // container id
-      style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
-      center: this.scene.center(), // starting position [lng, lat]
-      zoom: 13, // starting zoom
-      pitch: 20,
-      bearing: 0
-    });
-
-    var x: mapboxgl.LngLatLike = [coords.longitude, coords.latitude];
-    new mapboxgl.Marker().setLngLat(this.scene.center()).addTo(map);
   }
 })
 export default class AgoraMap extends Vue {
   @Prop(Object) source: String;
-  @Prop(Object) scene: any = {
-    accessToken: "",
-    lng: -73.984495,
-    lat: 40.756027,
+  @Prop(Object) map: mapboxgl.Map;
+  @Prop(Object) feature: IGeolocation;
+  @Prop(Object) mapScene: IMapScene = {
+    container: "map",
+    style: "mapbox://styles/mapbox/streets-v11",
     zoom: 13,
     pitch: 20,
     bearing: 0,
-    center: []
+    center: [0, 0]
   };
+  @Prop(Object) scene: IScene = {
+    mapScene: this.mapScene,
+    accessToken: "",
+    lng: 0,
+    lat: 0
+  };
+  @Prop(Object) location: IGeolocation = null;
+
+  @Prop(Object) symbolLayer: mapboxgl.Layer = {
+    id: "places",
+    type: "symbol",
+    source: null,
+    layout: {
+      "icon-image": "{icon}-15",
+      "icon-allow-overlap": true
+    }
+  };
+  @Prop(Object) symbolLayerSource: mapboxgl.GeoJSONSourceRaw = {
+    // @ts-ignore
+    source: {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features: []
+      }
+    }
+  };
+
+  @Watch("location", { immediate: true, deep: true })
+  OnSceneChanged(value: IGeolocation, oldVal: IGeolocation) {
+    let self = this;
+    if (value && value.latitude !== 0) {
+      let config: IApplicationConfig = getConfigStore(this.$store).current;
+      // @ts-ignore
+      mapboxgl.accessToken = config.APP_SETTINGS.APIS.MAP_BOX_API().Token;
+
+      this.mapScene = {
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v11",
+        zoom: 13,
+        pitch: 20,
+        bearing: 0,
+        center: value.center
+      };
+
+      const map = new mapboxgl.Map(this.mapScene);
+      // const popup = new mapboxgl.Popup({
+      //   offset: 25,
+      //   closeButton: false,
+      //   closeOnClick: false
+      // }).setText("Construction on the Washington Monument began in 1848.");
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false
+      });
+
+      map.on("load", function() {
+        const source: any = {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: self.OnAddGeoJSONLayerSourceFeature(
+              value.center,
+              "sdasdasd"
+            )
+          }
+        };
+
+        const layer: any = {
+          id: "places",
+          type: "symbol",
+          source: source,
+          layout: {
+            "icon-image": "{icon}-15",
+            "icon-allow-overlap": true
+          }
+        };
+
+        self.OnAddLayer(map, layer);
+      });
+
+      map.on("mouseenter", "places", function(e) {
+        // Change the cursor style as a UI indicator.
+        map.getCanvas().style.cursor = "pointer";
+        // @ts-ignore
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.description;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        // Populate the popup and set its coordinates
+        // based on the feature found.
+        popup
+          .setLngLat(coordinates)
+          .setHTML(description)
+          .addTo(map);
+      });
+
+      map.on("mouseleave", "places", function() {
+        map.getCanvas().style.cursor = "";
+        popup.remove();
+      });
+
+      // new mapboxgl.Marker()
+      //   .setLngLat(value.center)
+      //   //   .setPopup(popup)
+      //   .addTo(map);
+
+      // map.addControl(
+      //   new mapboxgl.GeolocateControl({
+      //     positionOptions: {
+      //       enableHighAccuracy: true
+      //     },
+      //     trackUserLocation: true
+      //   })
+      // );
+    }
+  }
+
+  OnAddLayer(map: mapboxgl.Map, layer: mapboxgl.Layer) {
+    map.addLayer(layer);
+  }
+
+  OnAddGeoJSONLayerSourceFeature(value: any, description: string) {
+    return [
+      {
+        type: "Feature",
+        properties: {
+          description: description,
+          icon: "theatre"
+        },
+        geometry: {
+          type: "Point",
+          coordinates: value
+        }
+      }
+    ];
+  }
 }
 </script>
