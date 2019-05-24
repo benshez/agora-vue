@@ -14,7 +14,7 @@ export class GeoLocationService {
         const postion: IGeolocation = {
             latitude: coords.coords.latitude,
             longitude: coords.coords.longitude,
-            center: [coords.coords.longitude, coords.coords.latitude]
+            center: [coords.coords.longitude, coords.coords.latitude],
         };
 
         return postion;
@@ -24,7 +24,7 @@ export class GeoLocationService {
         const postion: IGeolocation = {
             latitude: location.latitude,
             longitude: location.longitude,
-            center: [location.longitude, location.latitude]
+            center: [location.longitude, location.latitude],
         };
 
         return postion;

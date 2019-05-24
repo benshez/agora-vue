@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; height: 100%">
+  <div class="view-container">
     <agora-search/>
   </div>
 </template>
@@ -17,3 +17,10 @@ export default class AgoraMapView extends Vue {
   @Prop(Object) source: String;
 }
 </script>
+
+<style lang="scss" scoped>
+.view-container {
+  width: 100%;
+  height: 100%;
+}
+</style>

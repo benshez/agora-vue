@@ -5,4 +5,5 @@ export interface IMapScene {
     pitch: number;
     bearing: number;
     center: mapboxgl.LngLatLike;
+    attributionControl?: boolean;
 }

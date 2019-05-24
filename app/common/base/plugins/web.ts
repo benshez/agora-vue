@@ -3,7 +3,7 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import Vuetify from 'vuetify';
 
-export default function() {
+export default function () {
 	Vue.use(VeeValidate);
 	Vue.use(Vuetify, {
 		theme: {

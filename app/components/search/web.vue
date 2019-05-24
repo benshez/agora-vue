@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%">
+  <div class="map-container">
     <v-autocomplete
       v-model="model"
       :items="items"
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch, Provide } from "vue-property-decorator";
 import AgoraSearchBase from "@components/search/base";
 import AgoraMap from "@components/map/web.vue";
 import RootState from "@common/base/store/mixins/RootState";
@@ -49,3 +49,10 @@ import RootState from "@common/base/store/mixins/RootState";
 })
 export default class AgoraSearch extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+.map-container {
+  height: 100%;
+}
+</style>
+
