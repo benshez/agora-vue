@@ -5,54 +5,60 @@ import {
     Inject,
     Mixins
 } from "vue-property-decorator";
+import AgoraMapboxBase from "@components/map/components/ui/base";
 import mapboxgl from "mapbox-gl";
-import RootState from "@common/base/store/mixins/RootState";
+import { ICenter } from "@common/map/interfaces/ICenter";
+
 @Component
-export default class AgoraMapboxMarkerBase extends Mixins(RootState) {
-    @Prop() mapbox: any;
-    @Prop({ default: null }) map!: mapboxgl.Map;
+export default class AgoraMapboxMarkerBase extends Mixins(AgoraMapboxBase) {
+    @Inject("mapbox") readonly mapbox: any;
+    @Inject("map") map: mapboxgl.Map;
+    @Inject("marker") marker: mapboxgl.Marker;
+    @Inject("popup") popup: mapboxgl.Popup;
+    @Prop({ default: null }) center: ICenter;
+    @Prop() dataIndex: number;
     @Prop({ default: 25 }) offset: number;
     @Prop({ default: true }) coordinates: [];
     @Prop(Object) color: string
     @Prop({ default: "center" }) anchor: string;
     @Prop({ default: false }) draggable: boolean;
-    @Prop({ default: null }) marker: mapboxgl.Marker;
-    @Prop({ default: null }) popup: mapboxgl.Popup;
-    @Prop({ default: [] }) center: mapboxgl.LngLatLike;
-
-    @Watch("center")
-    onMCenter() {
-        this._addMarker();
-    }
 
     created() {
-        this._initialiseMarker();
+        this.markerInit();
     }
 
+    mounted() {
+        if (this.center) this.markerUpdate();
+    }
     beforeDestroy() {
-        this._removeMarker();
+        this.markerRemove();
     }
 
     remove() {
-        this._removeMarker();
+        this.markerRemove();
     }
 
-    _initialiseMarker() {
+    markerInit() {
         if (!this.mapbox) return;
         this.marker = new this.mapbox.Marker(this.offset);
     }
 
-    _addMarker() {
-        if (this.map && this.popup) {
+    markerUpdate() {
+        let popup = this.getPopup(this.dataIndex);
+        let center = {
+            lat: this.center.center[1],
+            lng: this.center.center[0]
+        };
+        if (this.getMap() && popup) {
             this.marker
-                .setLngLat(this.center)
-                .setPopup(this.popup)
+                .setLngLat(center)
+                .setPopup(popup)
                 .addTo(this.map);
         }
     }
 
 
-    _removeMarker() {
+    markerRemove() {
         this.marker.remove();
         //this.$_emitEvent("removed");
     }

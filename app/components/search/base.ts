@@ -6,7 +6,7 @@ import { IApplicationConfig, } from "@common/config/interfaces/IApplicationConfi
 import { getStore as getLocationStore } from "@common/search/store";
 import { getStore as getGeoLocationStore } from "@common/location/store";
 import { ILocations } from "@common/search/interfaces/ILocations";
-import { IGeolocation } from "@common/location/interfaces/IGeolocation";
+import { ICenter } from "@common/map/interfaces/ICenter";
 
 @Component
 export default class AgoraSearchBase extends Mixins(RootState) {
@@ -21,7 +21,7 @@ export default class AgoraSearchBase extends Mixins(RootState) {
   @Prop(Object) previousQuery: string = null;
   @Prop(Object) features: any = [];
   @Prop(Object) config: IApplicationConfig = getConfigStore(this.$store).current;
-  @Prop(Object) location: IGeolocation = null;
+  @Prop(Object) location: ICenter = null;
 
   @Watch("select")
   OnSelect(value: string) {
@@ -92,14 +92,8 @@ export default class AgoraSearchBase extends Mixins(RootState) {
 
   OnItemSelected(value: any) {
     if (value) {
-      const coords: IGeolocation = {
-        latitude: value.geometry.coordinates[1],
-        longitude: value.geometry.coordinates[0],
-        center: value.center
-      }
-
-      getGeoLocationStore(this.$store).updateCurrentLocation(coords);
-      this.location = coords;
+      getGeoLocationStore(this.$store).updateCurrentLocation(value.center);
+      this.location = value.center;
     }
   }
   isNewQuery(): boolean {

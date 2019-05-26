@@ -1,6 +1,7 @@
 <template>
   <div style="display: none">
     <!-- @slot Slot for popup content -->
+    <slot name="popup"/>
     <slot/>
   </div>
 </template>

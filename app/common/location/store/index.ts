@@ -1,35 +1,33 @@
 import { VuexModule, Module, Mutation, Action, getModule } from "vuex-module-decorators";
 import { Store } from "vuex";
-import { IGeolocation } from "@common/location/interfaces/IGeolocation";
 import { GeoLocationService } from "@common/location/services/GeoLocationService";
 import { GET_CURRENT_LOCATION, UPDATE_CURRENT_LOCATION } from "@common/base/store/MutationTypes";
 import { Config } from "@common/config/Config";
+import { ICenter } from "@common/map/interfaces/ICenter";
 
 @Module({ name: "GeoLocation", namespaced: Config.APP_SETTINGS.STORE_NAMESPACED, })
 export default class GeoLocation extends VuexModule {
-  current: IGeolocation = {
-    latitude: 0,
-    longitude: 0,
-    center: [0, 0]
-  };
-
-  @Mutation [GET_CURRENT_LOCATION](location: IGeolocation) {
-    this.current = location;
+  current: ICenter = {
+    center: null
   }
 
-  @Mutation [UPDATE_CURRENT_LOCATION](location: IGeolocation) {
-    this.current = location;
+
+  @Mutation [GET_CURRENT_LOCATION](location: ICenter) {
+    this.current.center = location.center;
   }
 
-  @Action({ commit: GET_CURRENT_LOCATION }) async loadCurrentLocation(): Promise<IGeolocation> {
+  @Mutation [UPDATE_CURRENT_LOCATION](location: ICenter) {
+    this.current.center = location.center;
+  }
+
+  @Action({ commit: GET_CURRENT_LOCATION }) async loadCurrentLocation(): Promise<ICenter> {
     const coords = await new GeoLocationService().GET_CURRENT_LOCATION();
-
     return coords
   }
 
-  @Action({ commit: UPDATE_CURRENT_LOCATION }) updateCurrentLocation(location: IGeolocation): IGeolocation {
+  @Action({ commit: UPDATE_CURRENT_LOCATION }) updateCurrentLocation(location: ICenter): ICenter {
     return new GeoLocationService().UPDATE_CURRENT_LOCATION(location);
   }
 }
 
-export const getStore = (store?: Store<IGeolocation>): GeoLocation => getModule(GeoLocation, store);
+export const getStore = (store?: Store<mapboxgl.LngLatLike>): GeoLocation => getModule(GeoLocation, store);

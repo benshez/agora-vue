@@ -6,39 +6,45 @@ import {
     Mixins
 } from "vue-property-decorator";
 import mapboxgl from "mapbox-gl";
-import RootState from "@common/base/store/mixins/RootState";
+import AgoraMapboxBase from "@components/map/components/ui/base";
+import { ICenter } from "@common/map/interfaces/ICenter";
 @Component
-export default class AgoraMapboxPopupBase extends Mixins(RootState) {
-    @Prop() mapbox: any;
-    @Prop() map: any;
+export default class AgoraMapboxPopupBase extends Mixins(AgoraMapboxBase) {
+    @Inject("mapbox") readonly mapbox: any;
+    @Inject("map") map: mapboxgl.Map;
+    @Prop({ default: null }) popup: mapboxgl.Popup;
+    @Prop({ default: null }) marker: mapboxgl.Marker;
+    @Prop({ default: null }) center: ICenter;
+    @Prop() dataIndex: number;
     @Prop({ default: true }) closeButton!: boolean;
     @Prop({ default: true }) closeOnClick!: boolean;
-    @Prop({ default: true }) initial: boolean;
-    @Prop({ default: [0, 0] }) lngLat: mapboxgl.LngLatLike;
     @Prop({ default: "" }) description: string;
-    @Prop({ default: null }) popup: mapboxgl.Popup;
-    @Prop({ default: [] }) center: mapboxgl.LngLatLike;
-
-    @Watch("center")
-    onCenter() {
-        this._addPopup();
-        this.initial = false;
-    }
+    @Prop({ default: 25 }) offset: number;
 
     created() {
-        this._initialisePopup();
+        this.popupInit();
+
+        if (this.center) {
+            this.popupUpdate();
+        }
     }
 
     beforeDestroy() {
-        this._removePopup();
+        this.popupRemove();
     }
 
     remove() {
-        this._removePopup();
+        this.popupRemove();
     }
 
-    _initialisePopup() {
+    markerInit() {
         if (!this.mapbox) return;
+        this.marker = new this.mapbox.Marker(this.offset);
+    }
+
+    popupInit() {
+        if (!this.mapbox) return;
+
         this.popup = new this.mapbox.Popup({
             offset: 25,
             closeButton: this.closeButton,
@@ -46,16 +52,15 @@ export default class AgoraMapboxPopupBase extends Mixins(RootState) {
         });
     }
 
-    _addPopup() {
-        if (this.map && this.popup) {
+    popupUpdate() {
+
+        if (this.getMap() && this.popup) {
             this.popup
-                .setLngLat(this.center)
-                .setHTML(this.description)
-                .addTo(this.map);
+                .setText(this.description);
         }
     }
 
-    _removePopup() {
+    popupRemove() {
         this.popup.remove();
         //this.$_emitEvent("removed");
     }

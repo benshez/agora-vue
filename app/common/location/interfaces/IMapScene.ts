@@ -1,3 +1,4 @@
+import mapboxgl from "mapbox-gl";
 export interface IMapScene {
     container: string;
     style: string;
