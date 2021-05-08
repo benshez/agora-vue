@@ -61,7 +61,7 @@
 		"vee-validate": "^2.2.8",
 		"mapbox-gl": "^1.0.0",
 		"i18n-ts": "^1.0.5",
-		"lodash": "^4.17.11",
+		"lodash": "^4.17.21",
 		"axios": "^0.18.0",
 		"es6-promise": "^4.2.6"
 	},
